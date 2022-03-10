@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dismissal</title>
+</head>
+<body>
+  <div id="title">
+    <h2>DISMISSAL</h2>
+  </div>
+  <div id="pages">
+    <div class="page" id="page-home">
+      <h3>Menu</h3>
+      <div class="button-menu-h">
+        <button class="btn-menu" id="btn-carline">Carline</button>
+        <button class="btn-menu" id="btn-grades">Grades</button>
+        <button class="btn-menu" id="btn-search">Search Student</button>
+        <button class="btn-menu" id="btn-admin">admin</button>
+      </div>
+    </div>
+
+    <div class="page hidden" id="page-carline">
+
+      <div class="" id="select-date">
+        <input type="date" name="carline-date" id="carline-date">
+      </div>
+
+      <button onclick="show_page('page-home')">Cancel</button>
+      <button onclick="select_date()">OK</button>
+
+      <div class="hidden" id="number-keypad">
+        <div id="num-1">1</div>
+        <div id="num-2">2</div>
+        <div id="num-3">3</div>
+        <div id="num-4">4</div>
+        <div id="num-5">5</div>
+        <div id="num-6">6</div>
+        <div id="num-7">7</div>
+        <div id="num-8">8</div>
+        <div id="num-9">9</div>
+        <div id="num-0">0</div>
+      </div>
+
+    </div>
+
+    <div class="page hidden" id="page-search">
+      <h3>Search Student</h3>
+      <div id="div-search">
+        <input autocomplete="off" type="text" id="i-search-student" placeholder="Search by first name">
+        <div class="button-menu">
+          <button id="btn-search">Search</button>
+          <button id="btn-search-cancel">Cancel</button>
+        </div>
+        <div id="list-result"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+
+  <script src="index.js"></script>
+</body>
+</html>
