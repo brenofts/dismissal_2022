@@ -130,29 +130,13 @@ function check_new_student() {
 
       car_values.forEach(trim_car)
       bus_values.forEach(trim_bus)
-
-      // new_student["car"] = [parseInt(car), bus.trim()]
-
-      // if (bus == '') {
-      //   new_student["car"] = [parseInt(car)]
-      // } 
-      
-      // if (car == '') {
-      //   new_student["car"] = [bus.trim()]
-      // }
-
-      // if (bus == '' && car == '') {
-      //   new_student["car"] = []
-      // }
-
       
       if(cars_and_buses.length == 0){
-        new_student["car"] = [0]
+        new_student["car"] = ["0"]
       } else {
         new_student["car"] = cars_and_buses
       }
-
-      // console.log(new_student)
+      
       register_new_student(new_student)
     }
   } else {
@@ -257,27 +241,24 @@ function edit_student(_index) {
   function car_or_bus(item) {
     var _car_or_bus = item
     var test = parseInt(_car_or_bus)
-    if (test === NaN) {
+    if (isNaN(test)) {
       console.log('Bus', item, test)
-    } else {
+      if (input_edit_bus.value == '') {
+          input_edit_bus.value += item
+      } else {
+          input_edit_bus.value += ', ' + item
+      }
+    } 
+    else {
       console.log('Car', item, test)
+      if (input_edit_car.value == '') {
+            input_edit_car.value += item
+          } else {
+            input_edit_car.value += ', ' + item
+          }
     }
 
-
-    // if (typeof item === 'number') {
-    //   if (input_edit_car.value == '') {
-    //     input_edit_car.value += item
-    //   } else {
-    //     input_edit_car.value += ', ' + item
-    //   }
-    // }
-    // if (typeof item === 'string') {
-    //   if (input_edit_bus.value == '') {
-    //     input_edit_bus.value += item
-    //   } else {
-    //     input_edit_bus.value += ', ' + item
-    //   }
-    // }
+    input_edit_grade.value = student.grade
   }
   cars.forEach(car_or_bus)
 
@@ -321,10 +302,12 @@ function check_edit() {
     student["car"] = cars_and_buses
   }
 
+  student["grade"] = input_edit_grade.value
+
   var confirm_text = "CHECK INFO BEFORE UPDATE \n" +
                      "\nFirst name: " + student.f_name +
                      "\nLast name: " + student.l_name + 
-                     "\nGrade: " + student.grade +
+                     "\nGrade: " + input_edit_grade.value +
                      "\nCar: " + input_edit_car.value +
                      "\nBus: " + input_edit_bus.value
 
