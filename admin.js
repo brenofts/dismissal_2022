@@ -1,18 +1,18 @@
-// firebase configuration 
+// // firebase configuration 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCKI77Sg3wsVUBlxwTFAu5WBjo9MPwp-VU",
-  authDomain: "dismissal-2022.firebaseapp.com",
-  databaseURL: "https://dismissal-2022-default-rtdb.firebaseio.com",
-  projectId: "dismissal-2022",
-  storageBucket: "dismissal-2022.appspot.com",
-  messagingSenderId: "489937329809",
-  appId: "1:489937329809:web:d9c0ac631cac20bf87e930"
-};
-firebase.initializeApp(firebaseConfig)
-const db = firebase.database()
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCKI77Sg3wsVUBlxwTFAu5WBjo9MPwp-VU",
+//   authDomain: "dismissal-2022.firebaseapp.com",
+//   databaseURL: "https://dismissal-2022-default-rtdb.firebaseio.com",
+//   projectId: "dismissal-2022",
+//   storageBucket: "dismissal-2022.appspot.com",
+//   messagingSenderId: "489937329809",
+//   appId: "1:489937329809:web:d9c0ac631cac20bf87e930"
+// };
+// firebase.initializeApp(firebaseConfig)
+// const db = firebase.database()
 
-// end firebase configuration
+// // end firebase configuration
 
 
 // pages
@@ -28,18 +28,18 @@ const div_search = document.getElementById('div-search')
 
 // navigation
 
-var pages = [student_page, new_student_page, edit_student_page]
+// var pages = [student_page, new_student_page, edit_student_page]
 
-function show_page(page) {
-  div_list_result.innerHTML = ''
-  clear_inputs()
-  div_edit_student.classList.add('hidden')
-  div_search.classList.remove('hidden')
-  const show = element => element.classList.remove('hidden')
-  const hide = element => element.classList.add('hidden')
-  pages.map(page => hide(page))
-  show(page)
-}
+// function show_page(page) {
+//   div_list_result.innerHTML = ''
+//   clear_inputs()
+//   div_edit_student.classList.add('hidden')
+//   div_search.classList.remove('hidden')
+//   const show = element => element.classList.remove('hidden')
+//   const hide = element => element.classList.add('hidden')
+//   pages.map(page => hide(page))
+//   show(page)
+// }
 
 
 // clear input data
@@ -78,9 +78,15 @@ const btn_ok_new_student = document.getElementById('btn-new-student-ok')
 
 
 // btn_student.addEventListener('click', e => show_page(student_page))
-btn_new_student.addEventListener('click', e => show_page(new_student_page))
-btn_cancel_new_student.addEventListener('click', e => show_page(student_page))
-btn_cancel_search.addEventListener('click', e => show_page(student_page))
+btn_new_student.addEventListener('click', e => show_page('page-new-student'))
+btn_cancel_new_student.addEventListener('click', e => show_page('page-admin'))
+btn_cancel_search.addEventListener('click', e => {
+  show_page('page-admin')
+  div_list_result.innerHTML = ''
+  input_search_student.value = ''
+  div_edit_student.classList.add('hidden')
+  div_search.classList.remove('hidden')
+})
 
 
 // new student
@@ -136,7 +142,7 @@ function check_new_student() {
       } else {
         new_student["car"] = cars_and_buses
       }
-      
+
       register_new_student(new_student)
     }
   } else {
@@ -169,27 +175,10 @@ function check_inputs() {
 btn_ok_new_student.addEventListener('click', e => check_new_student())
 
 
-// example - reading database
-
-db.ref('students').once('value', snap => {
-  var students = snap.val()
-  var car = 666
-  var find_car = student => student.car.includes(car)
-  var result = students.filter(find_car)
-  var time = new Date().toLocaleTimeString()
-  function edit(student) {
-    var name = student.f_name
-    var grade = student.grade
-    console.log(car + ' - ' + name + ' - ' + grade + ' - ' + time)
-  }
-  result.map(edit)
-})
-
-
 // edit student
 
 const btn_edit_student = document.getElementById('btn-edit-student')
-btn_edit_student.addEventListener('click', e => show_page(edit_student_page))
+btn_edit_student.addEventListener('click', e => show_page('page-edit-student'))
 
 const input_search_student = document.getElementById('i-search-student')
 const btn_search_student = document.getElementById('btn-search')
@@ -269,7 +258,12 @@ function edit_student(_index) {
 }
 
 const btn_cancel_edit = document.getElementById('btn-cancel-edit')
-btn_cancel_edit.addEventListener('click', e => show_page(student_page))
+btn_cancel_edit.addEventListener('click', e => {
+  show_page('page-admin')
+  input_search_student.value = ''
+  div_edit_student.classList.add('hidden')
+  div_search.classList.remove('hidden')
+})
 
 function check_edit() {
   var car_values = input_edit_car.value.split(',')
@@ -328,5 +322,37 @@ function confirm_edit() {
     document.location.reload()
   }).catch(e => alert('Something went wrong. ' + e.message))
 }
+
+var btn_ok_delete = document.getElementById('btn-ok-delete')
+btn_ok_delete.addEventListener('click', e => check_delete())
+
+function check_delete() {
+  var confirm_text = "CHECK INFO BEFORE DELETE \n" +
+                      "\nFirst name: " + student.f_name +
+                      "\nLast name: " + student.l_name + 
+                      "\nGrade: " + input_edit_grade.value +
+                      "\nCar: " + input_edit_car.value +
+                      "\nBus: " + input_edit_bus.value
+  if (window.confirm(confirm_text)) {
+    confirm_delete()
+  }
+}
+
+function confirm_delete() {
+    
+  db.ref('students').once('value')
+  .then(snap => {
+    var _students = snap.val()
+    _students.splice(index,1)
+    
+    db.ref('students').set(_students)
+    .then(() => {
+      alert('Student successfully deleted!')
+      document.location.reload()
+      })
+    .catch(e => alert('Something went wrong. ' + e.message))
+  })
+}
+
 
 // opção de cancelar um carro chamado por engano

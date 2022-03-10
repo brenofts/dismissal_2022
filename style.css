@@ -110,6 +110,11 @@ h3 {
   margin: 1em 0
 }
 
+#btn-ok-delete {
+  background-color: grey;
+  color: white;
+}
+
 .hidden {
   display: none;
 }
