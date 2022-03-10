@@ -255,20 +255,29 @@ function edit_student(_index) {
 
   var cars = student.car
   function car_or_bus(item) {
-    if (typeof item === 'number') {
-      if (input_edit_car.value == '') {
-        input_edit_car.value += item
-      } else {
-        input_edit_car.value += ', ' + item
-      }
+    var _car_or_bus = item
+    var test = parseInt(_car_or_bus)
+    if (test === NaN) {
+      console.log('Bus', item, test)
+    } else {
+      console.log('Car', item, test)
     }
-    if (typeof item === 'string') {
-      if (input_edit_bus.value == '') {
-        input_edit_bus.value += item
-      } else {
-        input_edit_bus.value += ', ' + item
-      }
-    }
+
+
+    // if (typeof item === 'number') {
+    //   if (input_edit_car.value == '') {
+    //     input_edit_car.value += item
+    //   } else {
+    //     input_edit_car.value += ', ' + item
+    //   }
+    // }
+    // if (typeof item === 'string') {
+    //   if (input_edit_bus.value == '') {
+    //     input_edit_bus.value += item
+    //   } else {
+    //     input_edit_bus.value += ', ' + item
+    //   }
+    // }
   }
   cars.forEach(car_or_bus)
 
