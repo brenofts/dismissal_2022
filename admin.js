@@ -81,7 +81,8 @@ const btn_ok_new_student = document.getElementById('btn-new-student-ok')
 btn_new_student.addEventListener('click', e => show_page('page-new-student'))
 btn_cancel_new_student.addEventListener('click', e => show_page('page-admin'))
 btn_cancel_search.addEventListener('click', e => {
-  show_page('page-admin')
+  if (home) show_page('page-home')
+  else show_page('page-admin')
   div_list_result.innerHTML = ''
   input_search_student.value = ''
   div_edit_student.classList.add('hidden')
@@ -178,7 +179,10 @@ btn_ok_new_student.addEventListener('click', e => check_new_student())
 // edit student
 
 const btn_edit_student = document.getElementById('btn-edit-student')
-btn_edit_student.addEventListener('click', e => show_page('page-edit-student'))
+btn_edit_student.addEventListener('click', e => {
+  home = false
+  show_page('page-edit-student')
+})
 
 const input_search_student = document.getElementById('i-search-student')
 const btn_search_student = document.getElementById('btn-search')
@@ -186,6 +190,7 @@ const div_list_result = document.getElementById('list-result')
 
 var students_search = []
 var student, index
+
 
 btn_search_student.addEventListener('click', e => {
   div_list_result.innerHTML = ''
@@ -204,7 +209,14 @@ btn_search_student.addEventListener('click', e => {
           var l_name = i.l_name
           var grade = i.grade
           index = students_search.indexOf(i)
-          var item = `<div onclick="edit_student(${index})">${cars} | ${f_name} ${l_name} | ${grade}</div>`
+          var item
+
+          if (home) {
+            item = `<div>${cars} | ${f_name} ${l_name} | ${grade}</div>`
+          } else {
+            item = `<div onclick="edit_student(${index})">${cars} | ${f_name} ${l_name} | ${grade}</div>`
+          }
+
           div_list_result.innerHTML += item
         }
         result.map(list_result)
@@ -260,6 +272,9 @@ function edit_student(_index) {
 const btn_cancel_edit = document.getElementById('btn-cancel-edit')
 btn_cancel_edit.addEventListener('click', e => {
   show_page('page-admin')
+  input_edit_bus.value = ''
+  input_edit_car.value = ''
+  input_edit_grade.value = ''
   input_search_student.value = ''
   div_edit_student.classList.add('hidden')
   div_search.classList.remove('hidden')
@@ -309,7 +324,6 @@ function check_edit() {
   if (window.confirm(confirm_text)) {
     confirm_edit()
   }
-  // students_search.splice(index, 1, student)
 
 }
 

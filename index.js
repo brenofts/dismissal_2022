@@ -52,7 +52,10 @@ var btn_carline = document.getElementById('btn-carline')
 btn_carline.addEventListener('click', e => show_page('page-carline'))
 
 var btn_admin = document.getElementById('btn-admin')
-btn_admin.addEventListener('click', e => show_page('page-admin'))
+btn_admin.addEventListener('click', e => {
+  show_page('page-admin')
+  home = false
+})
 
 //end home page buttons
 
@@ -130,7 +133,10 @@ function create_carline() {
 var btn_search_home = document.getElementById('btn-search-h')
 btn_search_home.addEventListener('click', () => open_search())
 
+var home
+
 function open_search() {
   document.getElementById('edit-title').innerText = 'Search student'
   show_page('page-edit-student')
+  home = true
 }
