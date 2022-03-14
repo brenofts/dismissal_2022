@@ -73,7 +73,17 @@ function select_date() {
   _date = input_date.value
 
   if (!_date == '') {
-    show_page('page-call-car')
+    check_if_exists()
+    .then(carline =>{
+      document.getElementById('screen').innerHTML = ''
+      document.getElementById('car-line-list').innerHTML = ''
+      carline.reverse().map(update_carline)
+      show_page('page-call-car')
+    })
+    .catch(() => {
+      document.getElementById('car-line-list').innerHTML = ''
+      show_page('page-call-car')
+    })
   } else {
     alert("Select date, please")
   }
@@ -120,7 +130,15 @@ function create_carline() {
 var screen = document.getElementById('screen')
 
 function insert_digit(it) {
-  if (screen.innerText.length < 3) screen.innerText += it
+  if (it == '0') {
+    if (screen.innerText == '') {
+      null
+    } else {
+      if (screen.innerText.length < 3) screen.innerText += it
+    }
+  } else {
+    if (screen.innerText.length < 3) screen.innerText += it
+  }
 }
 
 function erase() {
@@ -184,26 +202,47 @@ function check_if_exists() {
 	})
 }
 
+
+
 function confirm_car(_car, _students) {
+  var updated_carline
   check_if_exists()
   .then(carline => {
     var _cars = []
     carline.forEach(student => _cars.push(student.car))
     console.log(carline)
     if (!_cars.includes(_car)) {
-      var update_carline = carline.concat(_students)
-      db.ref('carlines/' + _date).set(update_carline)
-      .then(() => console.log('Carline updated. Car ' + _car + ' successfully added'))
+      updated_carline = carline.concat(_students)
+      db.ref('carlines/' + _date).set(updated_carline)
+      .then(() => {
+        document.getElementById('car-line-list').innerHTML = ''
+        document.getElementById('screen').innerHTML = ''
+        updated_carline.reverse().map(update_carline)
+        alert('Carline updated. Car ' + _car + ' successfully added')
+      })
       .catch(err => alert(err.message))
     } else alert('Car ' + _car + ' has been called already')
   })
   .catch(() => {
     db.ref('carlines/' + _date).set(_students)
-    .then(() => alert('Ok'))
+    .then(() => {
+      document.getElementById('car-line-list').innerHTML = ''
+      document.getElementById('screen').innerHTML = ''
+      _students.reverse().map(update_carline)
+      alert('Carline updated. Car ' + _car + ' successfully added')
+    })
     .catch(err => alert(err.message))
   })
 }
 
+function update_carline(i) {
+  var car = i.car
+  var f_name = i.f_name
+  var grade = i.grade
+  var moment = i.moment
+  var item = `<div >${car} | ${f_name} | ${grade} | ${moment} </div>`
+  document.getElementById('car-line-list').innerHTML += item
+}
 
 // end carline
 
