@@ -38,6 +38,9 @@ function show_page(id) {
   if(id == 'page-home') {
     document.getElementById('title-text').innerText = 'Dismissal'
   }
+  if(id == 'page-call-car') {
+    document.getElementById('title-text').innerText = _date
+  }
   
 }
 
@@ -70,9 +73,7 @@ function select_date() {
   _date = input_date.value
 
   if (!_date == '') {
-    check_if_exists()
-   .then(() => open_carline())
-   .catch(() => create_carline())
+    show_page('page-call-car')
   } else {
     alert("Select date, please")
   }
@@ -124,14 +125,12 @@ function watch_carline() {
 
 function create_carline() {
   console.log('Create carline ', _date)
-  document.getElementById('title-text').innerText = _date
   show_page('page-call-car')
 }
 
 var screen = document.getElementById('screen')
 
 function insert_digit(it) {
-  var display = document.getElementById('display')
   if (screen.innerText.length < 3) screen.innerText += it
 }
 
@@ -142,6 +141,61 @@ function erase() {
     screen.innerText = new_value
   }
 }
+
+function call_car() {
+  var confirm_text = ''
+  var _car = screen.innerText
+  db.ref('students').once('value').then(snap => {
+    var students = snap.val()
+
+    //FIND CAR'S STUDENTS
+    var read_car = student => student.car.includes(_car)
+    var students_in_car = students.filter(read_car)
+    
+    if (students_in_car.length > 0) {
+
+    var _students = []
+
+    var names_in_car = []
+
+    function write_names(student) {
+      var _name = student.f_name + ' - ' + student.grade 
+      names_in_car.push(_name)
+      student.car = _car
+      student.moment = new Date().toLocaleTimeString()
+      _students.push(student)
+    }
+
+    students_in_car.forEach(write_names)
+
+    function _confirm() {
+      var _names = names_in_car.join(', ')
+      confirm_text = `CAR:\n${_car}\nSTUDENTS:\n${_names}`
+      if(window.confirm(confirm_text)) {
+        confirm_car(_students)
+      }
+    }
+
+    _confirm()
+    }
+    else alert('Car ' + _car + ' was not found')
+  })
+}
+
+
+function confirm_car(_students) {
+  check_if_exists()
+  .then(carline => {
+    var update_carline = carline.concat(_students)
+    console.log(update_carline)
+  })
+  .catch(() => {
+    db.ref('carlines/' + _date).set(_students)
+    .then(() => alert('Ok'))
+    .catch(err => alert(err.message))
+  })
+}
+
 
 // end carline
 
