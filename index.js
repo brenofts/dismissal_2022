@@ -124,7 +124,7 @@ function watch_carline() {
 
 function create_carline() {
   console.log('Create carline ', _date)
-  document.getElementById('title-date').innerText = _date
+  document.getElementById('title-text').innerText = _date
   show_page('page-call-car')
 }
 

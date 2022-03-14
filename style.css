@@ -115,6 +115,15 @@ h3 {
   color: white;
 }
 
+
+#call-car-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 87vh;
+}
+
 #number-keypad {
   display: grid;
   grid-template: "a b c" auto;
@@ -140,6 +149,7 @@ h3 {
 
 #close-page-call {
   position: absolute;
+  top: 40px;
   right: 10px;
   background-color: black;
   color: white;
