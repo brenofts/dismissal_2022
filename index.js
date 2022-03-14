@@ -218,7 +218,13 @@ function confirm_car(_car, _students) {
         document.getElementById('car-line-list').innerHTML = ''
         document.getElementById('screen').innerHTML = ''
         updated_carline.reverse().map(update_carline)
+        document.getElementById('car-line-list').scrollTo({
+          top: 0,
+				  left: 0,
+				  behavior: 'smooth'
+        })
         alert('Carline updated. Car ' + _car + ' successfully added')
+        
       })
       .catch(err => alert(err.message))
     } else alert('Car ' + _car + ' has been called already')
@@ -229,6 +235,11 @@ function confirm_car(_car, _students) {
       document.getElementById('car-line-list').innerHTML = ''
       document.getElementById('screen').innerHTML = ''
       _students.reverse().map(update_carline)
+      document.getElementById('car-line-list').scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      })
       alert('Carline updated. Car ' + _car + ' successfully added')
     })
     .catch(err => alert(err.message))
