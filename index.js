@@ -80,17 +80,6 @@ function select_date() {
 
 }
 
-function check_if_exists() {
-	return new Promise((resolve, reject) => {
-    db.ref('carlines/' + _date).get().then(snap => {
-      if (snap.exists()) {
-        _carline = snap.val()
-        resolve(_carline)
-      }
-      else reject(false)
-    })
-	})
-}
 
 
 function open_carline() {
@@ -172,7 +161,7 @@ function call_car() {
       var _names = names_in_car.join(', ')
       confirm_text = `CAR:\n${_car}\nSTUDENTS:\n${_names}`
       if(window.confirm(confirm_text)) {
-        confirm_car(_students)
+        confirm_car(_car, _students)
       }
     }
 
@@ -183,11 +172,30 @@ function call_car() {
 }
 
 
-function confirm_car(_students) {
+function check_if_exists() {
+	return new Promise((resolve, reject) => {
+    db.ref('carlines/' + _date).get().then(snap => {
+      if (snap.exists()) {
+        _carline = snap.val()
+        resolve(_carline)
+      }
+      else reject(false)
+    })
+	})
+}
+
+function confirm_car(_car, _students) {
   check_if_exists()
   .then(carline => {
-    var update_carline = carline.concat(_students)
-    console.log(update_carline)
+    var _cars = []
+    carline.forEach(student => _cars.push(student.car))
+    console.log(carline)
+    if (!_cars.includes(_car)) {
+      var update_carline = carline.concat(_students)
+      db.ref('carlines/' + _date).set(update_carline)
+      .then(() => console.log('Carline updated. Car ' + _car + ' successfully added'))
+      .catch(err => alert(err.message))
+    } else alert('Car ' + _car + ' has been called already')
   })
   .catch(() => {
     db.ref('carlines/' + _date).set(_students)
