@@ -181,6 +181,7 @@ btn_ok_new_student.addEventListener('click', e => check_new_student())
 const btn_edit_student = document.getElementById('btn-edit-student')
 btn_edit_student.addEventListener('click', e => {
   home = false
+  document.getElementById('edit-title').innerText = 'Edit student'
   show_page('page-edit-student')
 })
 

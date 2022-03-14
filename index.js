@@ -124,6 +124,23 @@ function watch_carline() {
 
 function create_carline() {
   console.log('Create carline ', _date)
+  document.getElementById('title-date').innerText = _date
+  show_page('page-call-car')
+}
+
+var screen = document.getElementById('screen')
+
+function insert_digit(it) {
+  var display = document.getElementById('display')
+  if (screen.innerText.length < 3) screen.innerText += it
+}
+
+function erase() {
+  var value = screen.innerText
+  if (value.length != 0) {
+    var new_value = value.slice(0, -1)
+    screen.innerText = new_value
+  }
 }
 
 // end carline
