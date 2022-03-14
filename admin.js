@@ -243,7 +243,6 @@ function edit_student(_index) {
     var _car_or_bus = item
     var test = parseInt(_car_or_bus)
     if (isNaN(test)) {
-      console.log('Bus', item, test)
       if (input_edit_bus.value == '') {
           input_edit_bus.value += item
       } else {
@@ -251,7 +250,6 @@ function edit_student(_index) {
       }
     } 
     else {
-      console.log('Car', item, test)
       if (input_edit_car.value == '') {
             input_edit_car.value += item
           } else {

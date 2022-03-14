@@ -1,13 +1,13 @@
 // firebase configuration 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCKI77Sg3wsVUBlxwTFAu5WBjo9MPwp-VU",
-  authDomain: "dismissal-2022.firebaseapp.com",
-  databaseURL: "https://dismissal-2022-default-rtdb.firebaseio.com",
-  projectId: "dismissal-2022",
-  storageBucket: "dismissal-2022.appspot.com",
-  messagingSenderId: "489937329809",
-  appId: "1:489937329809:web:d9c0ac631cac20bf87e930"
+  apiKey: "AIzaSyDoUcPh4_4QiDXXCFI5RVQwBj_aomGvLmA",
+  // databaseURL: "https://bis-dimissal-default-rtdb.firebaseio.com",
+  authDomain: "bis-dismissal.firebaseapp.com",
+  projectId: "bis-dismissal",
+  storageBucket: "bis-dismissal.appspot.com",
+  messagingSenderId: "1019941316312",
+  appId: "1:1019941316312:web:92e539af021728e6d419ad"
 };
 firebase.initializeApp(firebaseConfig)
 const db = firebase.database()
