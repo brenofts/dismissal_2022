@@ -79,8 +79,7 @@ button:active {
   padding: .5em;
   padding-bottom: 2em;
   background-color: rgb(97, 161, 113);
-  height: 100%;
-  min-height: 85vh;
+  height: 95vh;
 }
 
 .button-menu {
@@ -124,7 +123,7 @@ h3 {
   height: 87vh;
 }
 
-#number-keypad {
+#number-keypad, #letters-keypad {
   display: grid;
   grid-template: "a b c" auto;
   justify-content: center;
@@ -141,10 +140,26 @@ h3 {
   font-size: 2em;
   min-width: 80px;
   min-height: 70px;
+  border-radius: 4px;
 }
 
 #num-ok, #num-erase {
   font-size: 1.2em;
+}
+
+#toggle-keypad {
+  position: absolute;
+  bottom: 10vh;
+  right: 15VW;
+  color: white;
+  background-color: rgb(66, 109, 77);
+  padding: 5px;
+  border-radius: 6px;
+  border: solid 1px white;
+}
+
+#toggle-keypad:active {
+  color: black;
 }
 
 #close-page-call {
@@ -185,9 +200,10 @@ h3 {
 
 #screen {
   background-color: black;
-  color: rgb(170, 255, 0);
+  color: white;
   width: 150px;
   height: 65px;
+  border-radius: 6px;
 }
 
 #car-line-list {
@@ -204,11 +220,16 @@ h3 {
 	overflow-y: scroll;
   padding-left: 4px;
   font-size: 9pt;
+  border-radius: 6px;
 }
 #car-line-list div {
-  width: 100%;
+  width: max-content;
   margin: 4px;
   cursor: pointer;
+  background-color: rgb(46, 46, 46);
+  padding: 5px;
+  border-radius: 6px;
+  
 }
 
 .hidden {

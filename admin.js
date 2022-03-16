@@ -118,18 +118,20 @@ function check_new_student() {
       var car_values = input_car.value.split(',')
       var bus_values = input_bus.value.split(',')
 
-      var cars_and_buses = []
+      // var cars_and_buses = []
+      var _cars = []
+      var _buses = []
 
       const trim_car = item => {
         if (!item == '') {
-          cars_and_buses.push(item.trim())
+          _cars.push(item.trim())
         } else {
           car_values = []
         }
       }
       const trim_bus = item => {
         if (!item == '') {
-          cars_and_buses.push(item.trim().toUpperCase())
+          _buses.push(item.trim().toUpperCase())
         } else {
           bus_values = []
         }
@@ -138,10 +140,15 @@ function check_new_student() {
       car_values.forEach(trim_car)
       bus_values.forEach(trim_bus)
       
-      if(cars_and_buses.length == 0){
+      if(_cars.length == 0){
         new_student["car"] = ["0"]
       } else {
-        new_student["car"] = cars_and_buses
+        new_student["car"] = _cars
+      }
+      if(_buses.length == 0){
+        new_student["bus"] = ["0"]
+      } else {
+        new_student["bus"] = _buses
       }
 
       register_new_student(new_student)
@@ -192,6 +199,7 @@ const div_list_result = document.getElementById('list-result')
 var students_search = []
 var student, index
 
+var cars_list, buses_list
 
 btn_search_student.addEventListener('click', e => {
   div_list_result.innerHTML = ''
@@ -205,7 +213,8 @@ btn_search_student.addEventListener('click', e => {
         alert('No register for ' + name)
       } else {
         function list_result(i) {
-          var cars = i.car.join(', ')
+          cars_list = i.car.join(', ')
+          buses_list = i.bus.join(', ')
           var f_name = i.f_name
           var l_name = i.l_name
           var grade = i.grade
@@ -213,9 +222,9 @@ btn_search_student.addEventListener('click', e => {
           var item
 
           if (home) {
-            item = `<div>${cars} | ${f_name} ${l_name} | ${grade}</div>`
+            item = `<div>${cars_list}, ${buses_list} | ${f_name} ${l_name} | ${grade}</div>`
           } else {
-            item = `<div onclick="edit_student(${index})">${cars} | ${f_name} ${l_name} | ${grade}</div>`
+            item = `<div onclick="edit_student(${index})">${cars_list}, ${buses_list} | ${f_name} ${l_name} | ${grade}</div>`
           }
 
           div_list_result.innerHTML += item
@@ -236,33 +245,11 @@ function edit_student(_index) {
   student = students_search[_index]
   var name = student.f_name + ' ' + student.l_name
   var title_name = document.getElementById('edit-student-name')
+  
   title_name.innerText = name
-  // input_edit_grade.value = student.grade
-
-  var cars = student.car
-  function car_or_bus(item) {
-    var _car_or_bus = item
-    var test = parseInt(_car_or_bus)
-    if (isNaN(test)) {
-      if (input_edit_bus.value == '') {
-          input_edit_bus.value += item
-      } else {
-          input_edit_bus.value += ', ' + item
-      }
-    } 
-    else {
-      if (input_edit_car.value == '') {
-            input_edit_car.value += item
-          } else {
-            input_edit_car.value += ', ' + item
-          }
-    }
-
-    input_edit_grade.value = student.grade
-  }
-  cars.forEach(car_or_bus)
-
-  // input_edit_car.value = student.car
+  input_edit_car.value = cars_list
+  input_edit_bus.value = buses_list
+  input_edit_grade.value = student.grade
 
   div_edit_student.classList.remove('hidden')
   div_search.classList.add('hidden')
@@ -283,20 +270,16 @@ function check_edit() {
   var car_values = input_edit_car.value.split(',')
   var bus_values = input_edit_bus.value.split(',')
 
-  var cars_and_buses = []
-
+  var _cars = []
+  var _buses = []
   const trim_car = item => {
     if (!item == '') {
-      cars_and_buses.push(item.trim())
-    } else {
-      car_values = []
+      _cars.push(item.trim())
     }
   }
   const trim_bus = item => {
     if (!item == '') {
-      cars_and_buses.push(item.trim().toUpperCase())
-    } else {
-      bus_values = []
+      _buses.push(item.trim().toUpperCase())
     }
   }
 
@@ -304,10 +287,15 @@ function check_edit() {
   bus_values.forEach(trim_bus)
 
 
-  if(cars_and_buses.length == 0){
-    student["car"] = [0]
+  if(_cars.length == 0){
+    student["car"] = ["0"]
   } else {
-    student["car"] = cars_and_buses
+    student["car"] = _cars
+  }
+  if(_buses.length == 0){
+    student["bus"] = ["0"]
+  } else {
+    student["bus"] = _buses
   }
 
   student["grade"] = input_edit_grade.value

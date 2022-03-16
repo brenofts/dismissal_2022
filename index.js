@@ -52,7 +52,14 @@ function show_page(id) {
 //home page buttons
 
 var btn_carline = document.getElementById('btn-carline')
-btn_carline.addEventListener('click', e => show_page('page-carline'))
+btn_carline.addEventListener('click', e => {
+
+  show_page('page-carline')
+})
+
+
+
+
 
 var btn_admin = document.getElementById('btn-admin')
 btn_admin.addEventListener('click', e => {
@@ -101,7 +108,7 @@ function open_carline() {
 
 function search_car(register) {
   db.ref('students').once('value').then(snap => {
-    var students = snap.val()
+    students = snap.val()
 
     //FIND CAR'S STUDENTS
     var read_car = student => student.car.includes(register.car)
@@ -149,11 +156,13 @@ function erase() {
   }
 }
 
+var students = []
+
 function call_car() {
   var confirm_text = ''
   var _car = screen.innerText
   db.ref('students').once('value').then(snap => {
-    var students = snap.val()
+    students = snap.val()
 
     //FIND CAR'S STUDENTS
     var read_car = student => student.car.includes(_car)
@@ -253,6 +262,23 @@ function update_carline(i) {
   var moment = i.moment
   var item = `<div >${car} | ${f_name} | ${grade} | ${moment} </div>`
   document.getElementById('car-line-list').innerHTML += item
+}
+
+
+
+function toggle_keypad() {
+  var button = document.getElementById('toggle-keypad')
+  if (button.innerText == 'ABC') {
+    document.getElementById("letters-keypad").innerHTML = ''
+    button.innerText = '123'
+    document.getElementById("number-keypad").style.display = 'none'
+    document.getElementById("letters-keypad").style.display = 'grid'
+  }
+  else if (button.innerText == '123') {
+    button.innerText = 'ABC'
+    document.getElementById("letters-keypad").style.display = 'none'
+    document.getElementById("number-keypad").style.display = 'grid'
+  }
 }
 
 // end carline
