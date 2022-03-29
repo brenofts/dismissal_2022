@@ -225,7 +225,10 @@ h3 {
   padding-left: 4px;
   font-size: 9pt;
   border-radius: 6px;
+  transition: all .5s;
 }
+
+
 #car-line-list div {
   width: max-content;
   margin: 4px;

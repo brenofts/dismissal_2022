@@ -250,7 +250,6 @@ function confirm_car(_car, _students) {
 				  left: 0,
 				  behavior: 'smooth'
         })
-        alert('Carline updated. Car ' + _car + ' successfully added')
         
       })
       .catch(err => alert(err.message))
@@ -267,7 +266,6 @@ function confirm_car(_car, _students) {
         left: 0,
         behavior: 'smooth'
       })
-      alert('Carline updated. Car ' + _car + ' successfully added')
     })
     .catch(err => alert(err.message))
   })
@@ -280,6 +278,7 @@ function update_carline(i) {
   var moment = i.moment
   var item = `<div >${car} | ${f_name} | ${grade} | ${moment} </div>`
   document.getElementById('car-line-list').innerHTML += item
+  document.getElementById('car-line-list').style.animation = 'blink .7s'
 }
 
 function toggle_keypad() {
@@ -313,7 +312,7 @@ function call_bus(_bus) {
   function write_names(student) {
     var _name = student.f_name + ' - ' + student.grade 
     names_in_bus.push(_name)
-    student.bus = _bus
+    student.car = _bus
     student.moment = new Date().toLocaleTimeString()
     _students.push(student)
   }
@@ -338,6 +337,43 @@ function confirm_bus(_bus, _students) {
     //CONTINUE FROM HERE
     //COLLECT CARLINE INFO AND UPADATE
     //CHECK CONFIRM_CAR()
+  var updated_carline
+  check_if_exists()
+  .then(carline => {
+    var _buses = []
+    carline.forEach(student => _buses.push(student.car))
+    console.log(carline)
+    if (!_buses.includes(_bus)) {
+      updated_carline = carline.concat(_students)
+      db.ref('carlines/' + _date).set(updated_carline)
+      .then(() => {
+        document.getElementById('car-line-list').innerHTML = ''
+        document.getElementById('screen').innerHTML = ''
+        updated_carline.reverse().map(update_carline)
+        document.getElementById('car-line-list').scrollTo({
+          top: 0,
+				  left: 0,
+				  behavior: 'smooth'
+        })
+        
+      })
+      .catch(err => alert(err.message))
+    } else alert('Bus ' + _bus + ' has been called already')
+  })
+  .catch(() => {
+    db.ref('carlines/' + _date).set(_students)
+    .then(() => {
+      document.getElementById('car-line-list').innerHTML = ''
+      document.getElementById('screen').innerHTML = ''
+      _students.reverse().map(update_carline)
+      document.getElementById('car-line-list').scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      })
+    })
+    .catch(err => alert(err.message))
+  })
 }
 
 
@@ -359,3 +395,24 @@ function open_search() {
 // alert message  
 var div_message = document.getElementById('div-message')
 var message_box = document.getElementById('message-box')
+
+
+// animate list background
+
+function blink(mutations) {
+  document.getElementById('car-line-list').style.backgroundColor = 'white'
+  setTimeout(() => {
+    document.getElementById('car-line-list').style.backgroundColor = 'black'
+  }, 1000);
+  setTimeout(() => {
+    document.getElementById('car-line-list').style.backgroundColor = 'white'
+  }, 2000);
+  setTimeout(() => {
+    document.getElementById('car-line-list').style.backgroundColor = 'black'
+  }, 3000);
+}
+
+var observer = new MutationObserver(blink)
+observer.observe(document.getElementById('car-line-list'), {childList: true})
+
+// animate list background END
