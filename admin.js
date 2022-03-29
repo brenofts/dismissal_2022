@@ -1,20 +1,3 @@
-// // firebase configuration 
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCKI77Sg3wsVUBlxwTFAu5WBjo9MPwp-VU",
-//   authDomain: "dismissal-2022.firebaseapp.com",
-//   databaseURL: "https://dismissal-2022-default-rtdb.firebaseio.com",
-//   projectId: "dismissal-2022",
-//   storageBucket: "dismissal-2022.appspot.com",
-//   messagingSenderId: "489937329809",
-//   appId: "1:489937329809:web:d9c0ac631cac20bf87e930"
-// };
-// firebase.initializeApp(firebaseConfig)
-// const db = firebase.database()
-
-// // end firebase configuration
-
-
 // pages
 
 const student_page = document.getElementById('page-student')
@@ -25,22 +8,6 @@ const edit_student_page = document.getElementById('page-edit-student')
 
 const div_edit_student = document.getElementById('div-edit-student')
 const div_search = document.getElementById('div-search')
-
-// navigation
-
-// var pages = [student_page, new_student_page, edit_student_page]
-
-// function show_page(page) {
-//   div_list_result.innerHTML = ''
-//   clear_inputs()
-//   div_edit_student.classList.add('hidden')
-//   div_search.classList.remove('hidden')
-//   const show = element => element.classList.remove('hidden')
-//   const hide = element => element.classList.add('hidden')
-//   pages.map(page => hide(page))
-//   show(page)
-// }
-
 
 // clear input data
 
@@ -96,7 +63,7 @@ function check_new_student() {
     
   var first_name = input_first_name.value
   var last_name = input_last_name.value
-  var grade = input_grade.value
+  var grade = input_grade.value.toUpperCase()
   var car = input_car.value
   var bus = input_bus.value
   var confirm_text = "CHECK INFO BEFORE REGISTER \n" +
@@ -298,12 +265,12 @@ function check_edit() {
     student["bus"] = _buses
   }
 
-  student["grade"] = input_edit_grade.value
+  student["grade"] = input_edit_grade.value.toUpperCase()
 
   var confirm_text = "CHECK INFO BEFORE UPDATE \n" +
                      "\nFirst name: " + student.f_name +
                      "\nLast name: " + student.l_name + 
-                     "\nGrade: " + input_edit_grade.value +
+                     "\nGrade: " + input_edit_grade.value.toUpperCase() +
                      "\nCar: " + input_edit_car.value +
                      "\nBus: " + input_edit_bus.value
 
