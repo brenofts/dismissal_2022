@@ -63,7 +63,9 @@
           <div id="num-ok" onclick="call_car()">ok</div>
           <div id="num-erase" onclick="erase()">⌫</div>
         </div>
-        <div class="hidden" id="letters-keypad"></div>
+        <div class="hidden" id="letters-keypad">
+          <div id="bus-letters"></div>
+        </div>
         </div>
         
       </div>
@@ -136,6 +138,20 @@
             <button id="btn-ok-delete">Delete</button>
             <button id="btn-cancel-edit">Cancel</button>
           </div>     
+        </div>
+      </div>
+      <div class="page hidden" id="page-confirm">
+        <div id="div-confirm">
+          <div id="confirm-box">text messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext message</div>
+        <div id="buttons-confirm" class="div-menu">
+          <button>confirm</button>
+        <button>cancel</button>
+        </div>
+        </div>
+      </div>
+      <div class="page hidden" id="page-message">
+        <div id="div-message">
+          <div id="message-box">text message</div>
         </div>
       </div>
     </div>

@@ -26,20 +26,23 @@ function show_page(id) {
 
   pages.forEach(i => i.classList.add('hidden'))
 
-  // var hide = Array.prototype.filter.call(pages, i => i.classList.add('hidden'))
-
   var page = document.getElementById(id)
 
   page.classList.remove('hidden')
 
-  if(id == 'page-admin') {
-    document.getElementById('title-text').innerText = 'Admin Page'
-  }
-  if(id == 'page-home') {
-    document.getElementById('title-text').innerText = 'Dismissal'
-  }
-  if(id == 'page-call-car') {
-    document.getElementById('title-text').innerText = _date
+  switch (id) {
+    case 'page-admin':
+      document.getElementById('title-text').innerText = 'Admin Page'
+      break;
+    case 'page-home':
+      document.getElementById('title-text').innerText = 'Dismissal'
+      break;
+    case 'page-call-car':
+      document.getElementById('title-text').innerText = _date
+      break;
+  
+    default:
+      break;
   }
   
 }
@@ -51,14 +54,53 @@ function show_page(id) {
 
 //home page buttons
 
+var input_date = document.getElementById('carline-date')
+
+function set_today() {
+  var year = new Date().getFullYear()
+  var month = new Date().getMonth() + 1
+  month < 10 ? month = '0' + month.toString() : null
+  var day = new Date().getDate()
+  var today = year + '-' + month + '-' + day
+  input_date.value = today
+}
+
 var btn_carline = document.getElementById('btn-carline')
 btn_carline.addEventListener('click', e => {
+  
+  set_today()
+
+  db.ref('students').once('value')
+  .then(snap => {
+    students = snap.val()
+
+    // CATCH BUS LETTERS
+    var all_buses = []
+    var look_for_bus = i => {
+      if (i.bus[0] != "0") {
+        i.bus.forEach(item => all_buses.push(item))
+      }
+    }
+    students.forEach(look_for_bus)
+
+    var collect_bus_letters = i => {
+      if (!bus_letters.includes(i)) bus_letters.push(i)
+    }
+
+    all_buses.forEach(collect_bus_letters)
+
+    document.getElementById("bus-letters").innerHTML = ''
+    
+    bus_letters.forEach(letter => {
+      var _div = `<div class="num" onclick="call_bus('${letter}')">${letter}</div>`
+      document.getElementById("bus-letters").innerHTML += _div
+    })
+
+  })
+  .catch(err => alert(err.message))
 
   show_page('page-carline')
 })
-
-
-
 
 
 var btn_admin = document.getElementById('btn-admin')
@@ -74,12 +116,12 @@ btn_admin.addEventListener('click', e => {
 
 var _date
 var _carline = []
-var input_date = document.getElementById('carline-date')
 
 function select_date() {
   _date = input_date.value
 
   if (!_date == '') {
+    
     check_if_exists()
     .then(carline =>{
       document.getElementById('screen').innerHTML = ''
@@ -88,7 +130,6 @@ function select_date() {
       show_page('page-call-car')
     })
     .catch(() => {
-      document.getElementById('car-line-list').innerHTML = ''
       show_page('page-call-car')
     })
   } else {
@@ -99,34 +140,12 @@ function select_date() {
 
 
 
-function open_carline() {
-
-  console.log('Carline exists', _carline, _date) 
-  _carline.forEach(search_car)
-  watch_carline()
-}
-
-function search_car(register) {
-  db.ref('students').once('value').then(snap => {
-    students = snap.val()
-
-    //FIND CAR'S STUDENTS
-    var read_car = student => student.car.includes(register.car)
-    var students_in_car = students.filter(read_car)
-    
-    // HOW CARLINE LIST WILL BE DISPLAYED
-    function write_line(student) {
-      console.log(register.car, student.f_name, student.grade, register.time)
-    }
-    students_in_car.forEach(write_line)
-  })
-}
-
-
 function watch_carline() {
   db.ref('carlines/' + _date).on('value', snap => {
-    console.log(snap.val())
-  } )
+    document.getElementById('car-line-list').innerHTML = ''
+    var list = snap.val()
+    list.reverse().map(update_carline)
+  })
 }
 
 function create_carline() {
@@ -157,51 +176,50 @@ function erase() {
 }
 
 var students = []
+var bus_letters = []
 
 function call_car() {
   var confirm_text = ''
   var _car = screen.innerText
-  db.ref('students').once('value').then(snap => {
-    students = snap.val()
+ 
+  //FIND CAR'S STUDENTS
+  var read_car = student => student.car.includes(_car)
+  var students_in_car = students.filter(read_car)
+  
+  if (students_in_car.length > 0) {
 
-    //FIND CAR'S STUDENTS
-    var read_car = student => student.car.includes(_car)
-    var students_in_car = students.filter(read_car)
-    
-    if (students_in_car.length > 0) {
+  var _students = []
 
-    var _students = []
+  var names_in_car = []
 
-    var names_in_car = []
+  function write_names(student) {
+    var _name = student.f_name + ' - ' + student.grade 
+    names_in_car.push(_name)
+    student.car = _car
+    student.moment = new Date().toLocaleTimeString()
+    _students.push(student)
+  }
 
-    function write_names(student) {
-      var _name = student.f_name + ' - ' + student.grade 
-      names_in_car.push(_name)
-      student.car = _car
-      student.moment = new Date().toLocaleTimeString()
-      _students.push(student)
+  students_in_car.forEach(write_names)
+
+  function _confirm() {
+    var _names = names_in_car.join(', ')
+    confirm_text = `CAR:\n${_car}\nSTUDENTS:\n${_names}`
+    if(window.confirm(confirm_text)) {
+      confirm_car(_car, _students)
     }
+  }
 
-    students_in_car.forEach(write_names)
-
-    function _confirm() {
-      var _names = names_in_car.join(', ')
-      confirm_text = `CAR:\n${_car}\nSTUDENTS:\n${_names}`
-      if(window.confirm(confirm_text)) {
-        confirm_car(_car, _students)
-      }
-    }
-
-    _confirm()
-    }
-    else alert('Car ' + _car + ' was not found')
-  })
+  _confirm()
+  }
+  else alert('Car ' + _car + ' was not found')
 }
 
 
 function check_if_exists() {
 	return new Promise((resolve, reject) => {
     db.ref('carlines/' + _date).get().then(snap => {
+      watch_carline()
       if (snap.exists()) {
         _carline = snap.val()
         resolve(_carline)
@@ -264,22 +282,64 @@ function update_carline(i) {
   document.getElementById('car-line-list').innerHTML += item
 }
 
-
-
 function toggle_keypad() {
   var button = document.getElementById('toggle-keypad')
   if (button.innerText == 'ABC') {
-    document.getElementById("letters-keypad").innerHTML = ''
     button.innerText = '123'
+    document.getElementById("screen").classList.add('hidden')
     document.getElementById("number-keypad").style.display = 'none'
     document.getElementById("letters-keypad").style.display = 'grid'
   }
   else if (button.innerText == '123') {
     button.innerText = 'ABC'
+    document.getElementById("screen").classList.remove('hidden')
     document.getElementById("letters-keypad").style.display = 'none'
     document.getElementById("number-keypad").style.display = 'grid'
   }
 }
+
+
+function call_bus(_bus) {
+  //FIND BUS' STUDENTS
+  var read_bus = student => student.bus.includes(_bus)
+  var students_in_bus = students.filter(read_bus)
+  
+  if (students_in_bus.length > 0) {
+
+  var _students = []
+
+  var names_in_bus = []
+
+  function write_names(student) {
+    var _name = student.f_name + ' - ' + student.grade 
+    names_in_bus.push(_name)
+    student.bus = _bus
+    student.moment = new Date().toLocaleTimeString()
+    _students.push(student)
+  }
+
+  students_in_bus.forEach(write_names)
+
+  function _confirm() {
+    var _names = names_in_bus.join(', ')
+    confirm_text = `BUS:\n${_bus}\nSTUDENTS:\n${_names}`
+    if(window.confirm(confirm_text)) {
+      confirm_bus(_bus, _students)
+    }
+  }
+
+  _confirm()
+  }
+  else alert('Bus ' + _bus + ' was not found')
+}
+
+
+function confirm_bus(_bus, _students) {
+    //CONTINUE FROM HERE
+    //COLLECT CARLINE INFO AND UPADATE
+    //CHECK CONFIRM_CAR()
+}
+
 
 // end carline
 
@@ -295,3 +355,7 @@ function open_search() {
   show_page('page-edit-student')
   home = true
 }
+
+// alert message  
+var div_message = document.getElementById('div-message')
+var message_box = document.getElementById('message-box')
