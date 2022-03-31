@@ -179,6 +179,7 @@ var students = []
 var bus_letters = []
 
 function call_car() {
+  if (screen.innerText != '') {
   var confirm_text = ''
   var _car = screen.innerText
  
@@ -213,6 +214,9 @@ function call_car() {
   _confirm()
   }
   else alert('Car ' + _car + ' was not found')
+  } else {
+    alert('Insert car number')
+  }
 }
 
 
@@ -276,7 +280,7 @@ function update_carline(i) {
   var f_name = i.f_name
   var grade = i.grade
   var moment = i.moment
-  var item = `<div >${car} | ${f_name} | ${grade} | ${moment} </div>`
+  var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
   document.getElementById('car-line-list').innerHTML += item
   document.getElementById('car-line-list').style.animation = 'blink .7s'
 }
@@ -416,3 +420,36 @@ var observer = new MutationObserver(blink)
 observer.observe(document.getElementById('car-line-list'), {childList: true})
 
 // animate list background END
+
+// filter grades to display
+
+function open_grade(grade) {
+  var _grade = "4TH"
+
+  db.ref('carlines/2022-03-29').on('value', snap => {
+    document.getElementById('car-line-list').innerHTML = ''
+    var all_grades = snap.val()
+    console.log(all_grades)
+    
+    var filter_grade = i => i.grade === _grade
+
+    var filtered_list = all_grades.filter(filter_grade)
+
+    filtered_list.map(update_list)
+
+  })
+
+  // continue from here
+  // create a new car-line-list on grades' page
+
+  function update_list(i) {
+    var car = i.car
+    var f_name = i.f_name
+    var grade = i.grade
+    var moment = i.moment
+    var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
+    document.getElementById('car-line-list').innerHTML += item
+    document.getElementById('car-line-list').style.animation = 'blink .7s'
+  }
+
+}

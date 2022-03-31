@@ -214,8 +214,8 @@ function edit_student(_index) {
   var title_name = document.getElementById('edit-student-name')
   
   title_name.innerText = name
-  input_edit_car.value = cars_list
-  input_edit_bus.value = buses_list
+  input_edit_car.value = student.car.toString()
+  input_edit_bus.value = student.bus.toString()
   input_edit_grade.value = student.grade
 
   div_edit_student.classList.remove('hidden')

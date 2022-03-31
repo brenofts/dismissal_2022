@@ -28,7 +28,7 @@ p {
   margin-left: 1em;
 }
 
-input {
+input, select {
   text-transform: none;
   padding: .5em;
   margin: .3em;
@@ -154,7 +154,7 @@ h3 {
 #toggle-keypad {
   position: absolute;
   bottom: 10vh;
-  right: 15VW;
+  right: 1VW;
   color: white;
   background-color: rgb(66, 109, 77);
   padding: 5px;

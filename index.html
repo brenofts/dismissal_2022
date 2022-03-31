@@ -20,7 +20,7 @@
         <h3>Menu</h3>
         <div class="button-menu-h">
           <button class="btn-menu" id="btn-carline">Carline</button>
-          <button class="btn-menu" id="btn-grades">Grades</button>
+          <!-- <button class="btn-menu" id="btn-grades">Grades</button> -->
           <button class="btn-menu" id="btn-search-h">Search Student</button>
           <button class="btn-menu" id="btn-admin">admin</button>
         </div>
@@ -97,10 +97,31 @@
         <div id="new-student-form">
           <input autocomplete="off" type="text" id="i-first-name" placeholder="First name">
           <input autocomplete="off" type="text" id="i-last-name" placeholder="Last name">
-          <input autocomplete="off" type="text" id="i-grade" placeholder="Grade">
+          <!-- <input autocomplete="off" type="text" id="i-grade" placeholder="Grade"> -->
+          
+          <label for="i-grade">Grade</label>
+            <select name="grades" id="i-grade">
+
+              <option value="PRE-K3">PRE-K3</option>
+              <option value="PRE-K4">PRE-K4</option>
+              <option value="K">KINDERGARTEN</option>
+              <option value="1ST">1ST</option>
+              <option value="2ND">2ND</option>
+              <option value="3RD">3RD</option>
+              <option value="4TH">4TH</option>
+              <option value="5TH">5TH</option>
+              <option value="6TH">6TH</option>
+              <option value="7TH">7TH</option>
+              <option value="8TH">8TH</option>
+              <option value="9TH">9TH</option>
+              <option value="10TH">10TH</option>
+              <option value="11TH">11TH</option>
+              <option value="12TH">12TH</option>
+
+            </select>
           <p><red>IMPORTANT:</red> <br> If there are two or more cars or buses, separate by comma. <br>Example: 123, 456 / A, B</p>
-          <input autocomplete="off" type="text" id="i-car" placeholder="Car (numbers only)">
-          <input autocomplete="off" type="text" id="i-bus" placeholder="Bus (letters only)">
+          <input autocomplete="off" type="text" id="i-car" placeholder="Car">
+          <input autocomplete="off" type="text" id="i-bus" placeholder="Bus">
           <div class="button-menu">
             <button id="btn-new-student-ok">OK</button>
             <button id="btn-new-student-cancel">Cancel</button>
@@ -123,14 +144,33 @@
             
           <div id="edit-student-form">
             <p>IMPORTANT: <br> If there are two or more cars or buses, separate by comma. <br>Example: 123, 456 / A, B</p>
-            <label for="edit-student-car">Car (numbers only)</label>
+            <label for="edit-student-car">Car</label>
             <input autocomplete="off" type="text" id="edit-student-car">
             
-            <label for="edit-student-bus">Bus (letters only)</label>
+            <label for="edit-student-bus">Bus</label>
             <input autocomplete="off" type="text" id="edit-student-bus">
             
             <label for="edit-student-grade">Grade</label>
-            <input autocomplete="off" type="text" id="edit-student-grade">
+            <!-- <input autocomplete="off" type="text" id="edit-student-grade"> -->
+            <select name="grades" id="edit-student-grade">
+
+              <option value="PRE-K3">PRE-K3</option>
+              <option value="PRE-K4">PRE-K4</option>
+              <option value="K">KINDERGARTEN</option>
+              <option value="1ST">1ST</option>
+              <option value="2ND">2ND</option>
+              <option value="3RD">3RD</option>
+              <option value="4TH">4TH</option>
+              <option value="5TH">5TH</option>
+              <option value="6TH">6TH</option>
+              <option value="7TH">7TH</option>
+              <option value="8TH">8TH</option>
+              <option value="9TH">9TH</option>
+              <option value="10TH">10TH</option>
+              <option value="11TH">11TH</option>
+              <option value="12TH">12TH</option>
+
+            </select>
           </div>
            
           <div class="button-menu">
