@@ -61,6 +61,7 @@ function set_today() {
   var month = new Date().getMonth() + 1
   month < 10 ? month = '0' + month.toString() : null
   var day = new Date().getDate()
+  day < 10 ? day = '0' + day.toString() : null
   var today = year + '-' + month + '-' + day
   input_date.value = today
 }
@@ -149,7 +150,6 @@ function watch_carline() {
 }
 
 function create_carline() {
-  console.log('Create carline ', _date)
   show_page('page-call-car')
 }
 
@@ -180,13 +180,13 @@ var bus_letters = []
 
 function call_car() {
   if (screen.innerText != '') {
-  var confirm_text = ''
-  var _car = screen.innerText
- 
+    var confirm_text = ''
+    var _car = screen.innerText
+    
   //FIND CAR'S STUDENTS
-  var read_car = student => student.car.includes(_car)
+  var read_car = student => student.car == _car
   var students_in_car = students.filter(read_car)
-  
+    
   if (students_in_car.length > 0) {
 
   var _students = []
@@ -219,6 +219,8 @@ function call_car() {
   }
 }
 
+document.getElementById('num-ok').addEventListener('click', call_car)
+
 
 function check_if_exists() {
 	return new Promise((resolve, reject) => {
@@ -241,7 +243,6 @@ function confirm_car(_car, _students) {
   .then(carline => {
     var _cars = []
     carline.forEach(student => _cars.push(student.car))
-    console.log(carline)
     if (!_cars.includes(_car)) {
       updated_carline = carline.concat(_students)
       db.ref('carlines/' + _date).set(updated_carline)
@@ -346,7 +347,6 @@ function confirm_bus(_bus, _students) {
   .then(carline => {
     var _buses = []
     carline.forEach(student => _buses.push(student.car))
-    console.log(carline)
     if (!_buses.includes(_bus)) {
       updated_carline = carline.concat(_students)
       db.ref('carlines/' + _date).set(updated_carline)
@@ -429,7 +429,6 @@ function open_grade(grade) {
   db.ref('carlines/2022-03-29').on('value', snap => {
     document.getElementById('car-line-list').innerHTML = ''
     var all_grades = snap.val()
-    console.log(all_grades)
     
     var filter_grade = i => i.grade === _grade
 

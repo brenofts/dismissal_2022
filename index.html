@@ -1,205 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dismissal</title>
-</head>
-<body>
-  <div class="index">
-    <div id="title">
-      <h2 id="title-text">DISMISSAL</h2>
-    </div>
-    <div id="pages">
-      <div class="page" id="page-home">
-        <h3>Menu</h3>
-        <div class="button-menu-h">
-          <button class="btn-menu" id="btn-carline">Carline</button>
-          <!-- <button class="btn-menu" id="btn-grades">Grades</button> -->
-          <button class="btn-menu" id="btn-search-h">Search Student</button>
-          <button class="btn-menu" id="btn-admin">admin</button>
-        </div>
-      </div>
-  
-      <div class="page hidden" id="page-carline">
-  
-        <div class="" id="select-date">
-          <label for="carline-date">Select date</label><br>
-          <input type="date" name="carline-date" id="carline-date">
-        </div>
-  
-        <div class="button-menu">
-          <button onclick="show_page('page-home')">Cancel</button>
-        <button onclick="select_date()">OK</button>
-        </div>
-    
-      </div>
+	<head>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="style.css" />
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dismissal</title>
+	</head>
+	<body>
+		<div class="index">
+			<div id="title">
+				<h2 id="title-text">DISMISSAL</h2>
+			</div>
+			<div id="pages">
+				<div class="page" id="page-home">
+					<h3>Menu</h3>
+					<div class="button-menu-h">
+						<button class="btn-menu" id="btn-carline">Carline</button>
+						<button class="btn-menu" id="btn-grades">Grades</button>
+						<button class="btn-menu" id="btn-search-h">Search Student</button>
+						<button class="btn-menu" id="btn-admin">admin</button>
+					</div>
+				</div>
 
-      <div class="page hidden" id="page-call-car">
-        <div id="call-car-div">
-          <div id="close-page-call" onclick="show_page('page-carline')">X</div>
-        <div id="title-date"></div>
-        <div id="car-line-list"></div>
-        <div id="display">
-          <div id="screen"></div>
-        </div>
-        <div id="toggle-keypad" onclick="toggle_keypad()">ABC</div>
-        <div id="number-keypad">
-          <div class="num" id="num-1" onclick="insert_digit(1)">1</div>
-          <div class="num" id="num-2" onclick="insert_digit(2)">2</div>
-          <div class="num" id="num-3" onclick="insert_digit(3)">3</div>
-          <div class="num" id="num-4" onclick="insert_digit(4)">4</div>
-          <div class="num" id="num-5" onclick="insert_digit(5)">5</div>
-          <div class="num" id="num-6" onclick="insert_digit(6)">6</div>
-          <div class="num" id="num-7" onclick="insert_digit(7)">7</div>
-          <div class="num" id="num-8" onclick="insert_digit(8)">8</div>
-          <div class="num" id="num-9" onclick="insert_digit(9)">9</div>
-          <div class="num" id="num-0" onclick="insert_digit(0)">0</div>
-          <div id="num-ok" onclick="call_car()">ok</div>
-          <div id="num-erase" onclick="erase()">⌫</div>
-        </div>
-        <div class="hidden" id="letters-keypad">
-          <div id="bus-letters"></div>
-        </div>
-        </div>
-        
-      </div>
-  
-      <!-- <div class="page hidden" id="page-search">
-        <h3>Search Student</h3>
-        <div id="div-search">
-          <input autocomplete="off" type="text" id="i-search-student" placeholder="Search by first name">
-          <div class="button-menu">
-            <button id="btn-search">Search</button>
-            <button id="btn-search-cancel">Cancel</button>
-          </div>
-          <div id="list-result"></div>
-        </div>
-      </div> -->
-    </div>
-  </div>
+				<div class="page hidden" id="page-carline">
+					<div class="" id="select-date">
+						<label for="carline-date">Select date</label><br />
+						<input type="date" name="carline-date" id="carline-date" />
+					</div>
 
-  
-  <div id="pages">
-    <div class="page hidden" id="page-admin">
-        <h3>Student</h3>
-        <button id="btn-new-student">New Student</button>
-        <button id="btn-edit-student">Edit Student</button>
-        <button onclick="show_page('page-home')">Back</button>
-      </div>
-      <div class="page hidden" id="page-new-student">
-        <h3>New Student</h3>
-        <div id="new-student-form">
-          <input autocomplete="off" type="text" id="i-first-name" placeholder="First name">
-          <input autocomplete="off" type="text" id="i-last-name" placeholder="Last name">
-          <!-- <input autocomplete="off" type="text" id="i-grade" placeholder="Grade"> -->
-          
-          <label for="i-grade">Grade</label>
-            <select name="grades" id="i-grade">
+					<div class="button-menu">
+						<button onclick="show_page('page-home')">Cancel</button>
+						<button onclick="select_date()">OK</button>
+					</div>
+				</div>
 
-              <option value="PRE-K3">PRE-K3</option>
-              <option value="PRE-K4">PRE-K4</option>
-              <option value="K">KINDERGARTEN</option>
-              <option value="1ST">1ST</option>
-              <option value="2ND">2ND</option>
-              <option value="3RD">3RD</option>
-              <option value="4TH">4TH</option>
-              <option value="5TH">5TH</option>
-              <option value="6TH">6TH</option>
-              <option value="7TH">7TH</option>
-              <option value="8TH">8TH</option>
-              <option value="9TH">9TH</option>
-              <option value="10TH">10TH</option>
-              <option value="11TH">11TH</option>
-              <option value="12TH">12TH</option>
+				<div class="page hidden" id="page-call-car">
+					<div id="call-car-div">
+						<div id="close-page-call" onclick="show_page('page-carline')">X</div>
+						<div id="title-date"></div>
+						<div id="car-line-list"></div>
+						<div id="display">
+							<div id="screen"></div>
+						</div>
+						<div id="toggle-keypad" onclick="toggle_keypad()">ABC</div>
+						<div id="number-keypad">
+							<div class="num" id="num-1" onclick="insert_digit(1)">1</div>
+							<div class="num" id="num-2" onclick="insert_digit(2)">2</div>
+							<div class="num" id="num-3" onclick="insert_digit(3)">3</div>
+							<div class="num" id="num-4" onclick="insert_digit(4)">4</div>
+							<div class="num" id="num-5" onclick="insert_digit(5)">5</div>
+							<div class="num" id="num-6" onclick="insert_digit(6)">6</div>
+							<div class="num" id="num-7" onclick="insert_digit(7)">7</div>
+							<div class="num" id="num-8" onclick="insert_digit(8)">8</div>
+							<div class="num" id="num-9" onclick="insert_digit(9)">9</div>
+							<div class="num" id="num-0" onclick="insert_digit(0)">0</div>
+							<div id="num-ok">ok</div>
+							<div id="num-erase" onclick="erase()">⌫</div>
+						</div>
+						<div class="hidden" id="letters-keypad">
+							<div id="bus-letters"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-            </select>
-          <p><red>IMPORTANT:</red> <br> If there are two or more cars or buses, separate by comma. <br>Example: 123, 456 / A, B</p>
-          <input autocomplete="off" type="text" id="i-car" placeholder="Car">
-          <input autocomplete="off" type="text" id="i-bus" placeholder="Bus">
-          <div class="button-menu">
-            <button id="btn-new-student-ok">OK</button>
-            <button id="btn-new-student-cancel">Cancel</button>
-          </div>
-        </div>
-      </div>
+		<div class="page hidden" id="page-admin">
+			<h3>Student</h3>
+			<button id="btn-new-student">New Student</button>
+			<button id="btn-edit-student">Edit Student</button>
+			<button onclick="show_page('page-home')">Back</button>
+		</div>
+		<div class="page hidden" id="page-new-student">
+			<h3>New Student</h3>
+			<div id="new-student-form">
+				<input autocomplete="off" type="text" id="i-first-name" placeholder="First name" />
+				<input autocomplete="off" type="text" id="i-last-name" placeholder="Last name" />
+				<!-- <input autocomplete="off" type="text" id="i-grade" placeholder="Grade"> -->
 
-      <div class="page hidden" id="page-edit-student">
-        <h3 id="edit-title">Edit Student</h3>
-        <div id="div-search">
-          <input autocomplete="off" type="text" id="i-search-student" placeholder="Search by first name">
-          <div class="button-menu">
-            <button id="btn-search">Search</button>
-            <button id="btn-search-cancel" >Cancel</button>
-          </div>
-          <div id="list-result"></div>
-        </div>
-        <div id="div-edit-student" class="hidden">
-          <h3 id="edit-student-name"></h3>
-            
-          <div id="edit-student-form">
-            <p>IMPORTANT: <br> If there are two or more cars or buses, separate by comma. <br>Example: 123, 456 / A, B</p>
-            <label for="edit-student-car">Car</label>
-            <input autocomplete="off" type="text" id="edit-student-car">
-            
-            <label for="edit-student-bus">Bus</label>
-            <input autocomplete="off" type="text" id="edit-student-bus">
-            
-            <label for="edit-student-grade">Grade</label>
-            <!-- <input autocomplete="off" type="text" id="edit-student-grade"> -->
-            <select name="grades" id="edit-student-grade">
+				<label for="i-grade">Grade</label>
+				<select name="grades" id="i-grade">
+					<option value="PRE-K3">PRE-K3</option>
+					<option value="PRE-K4">PRE-K4</option>
+					<option value="K">KINDERGARTEN</option>
+					<option value="1ST">1ST</option>
+					<option value="2ND">2ND</option>
+					<option value="3RD">3RD</option>
+					<option value="4TH">4TH</option>
+					<option value="5TH">5TH</option>
+					<option value="6TH">6TH</option>
+					<option value="7TH">7TH</option>
+					<option value="8TH">8TH</option>
+					<option value="9TH">9TH</option>
+					<option value="10TH">10TH</option>
+					<option value="11TH">11TH</option>
+					<option value="12TH">12TH</option>
+				</select>
+				<p>
+					<red>IMPORTANT:</red> <br />
+					If there are two or more cars or buses, separate by comma. <br />Example: 123, 456 / A, B
+				</p>
+				<input autocomplete="off" type="text" id="i-car" placeholder="Car" />
+				<input autocomplete="off" type="text" id="i-bus" placeholder="Bus" />
+				<div class="button-menu">
+					<button id="btn-new-student-ok">OK</button>
+					<button id="btn-new-student-cancel">Cancel</button>
+				</div>
+			</div>
+		</div>
 
-              <option value="PRE-K3">PRE-K3</option>
-              <option value="PRE-K4">PRE-K4</option>
-              <option value="K">KINDERGARTEN</option>
-              <option value="1ST">1ST</option>
-              <option value="2ND">2ND</option>
-              <option value="3RD">3RD</option>
-              <option value="4TH">4TH</option>
-              <option value="5TH">5TH</option>
-              <option value="6TH">6TH</option>
-              <option value="7TH">7TH</option>
-              <option value="8TH">8TH</option>
-              <option value="9TH">9TH</option>
-              <option value="10TH">10TH</option>
-              <option value="11TH">11TH</option>
-              <option value="12TH">12TH</option>
+		<div class="page hidden" id="page-edit-student">
+			<h3 id="edit-title">Edit Student</h3>
+			<div id="div-search">
+				<input autocomplete="off" type="text" id="i-search-student" placeholder="Search by first name" />
+				<div class="button-menu">
+					<button id="btn-search">Search</button>
+					<button id="btn-search-cancel">Cancel</button>
+				</div>
+				<div id="list-result"></div>
+			</div>
+			<div id="div-edit-student" class="hidden">
+				<h3 id="edit-student-name"></h3>
 
-            </select>
-          </div>
-           
-          <div class="button-menu">
-            <button id="btn-ok-edit">Edit</button>
-            <button id="btn-ok-delete">Delete</button>
-            <button id="btn-cancel-edit">Cancel</button>
-          </div>     
-        </div>
-      </div>
-      <div class="page hidden" id="page-confirm">
-        <div id="div-confirm">
-          <div id="confirm-box">text messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext message</div>
-        <div id="buttons-confirm" class="div-menu">
-          <button>confirm</button>
-        <button>cancel</button>
-        </div>
-        </div>
-      </div>
-      <div class="page hidden" id="page-message">
-        <div id="div-message">
-          <div id="message-box">text message</div>
-        </div>
-      </div>
-    </div>
-  <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-database.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+				<div id="edit-student-form">
+					<p>
+						IMPORTANT: <br />
+						If there are two or more cars or buses, separate by comma. <br />Example: 123, 456 / A, B
+					</p>
+					<label for="edit-student-car">Car</label>
+					<input autocomplete="off" type="text" id="edit-student-car" />
 
-  <script src="index.js"></script>
-  <script src="admin.js"></script>
-</body>
+					<label for="edit-student-bus">Bus</label>
+					<input autocomplete="off" type="text" id="edit-student-bus" />
+
+					<label for="edit-student-grade">Grade</label>
+					<!-- <input autocomplete="off" type="text" id="edit-student-grade"> -->
+					<select name="grades" id="edit-student-grade">
+						<option value="PRE-K3">PRE-K3</option>
+						<option value="PRE-K4">PRE-K4</option>
+						<option value="K">KINDERGARTEN</option>
+						<option value="1ST">1ST</option>
+						<option value="2ND">2ND</option>
+						<option value="3RD">3RD</option>
+						<option value="4TH">4TH</option>
+						<option value="5TH">5TH</option>
+						<option value="6TH">6TH</option>
+						<option value="7TH">7TH</option>
+						<option value="8TH">8TH</option>
+						<option value="9TH">9TH</option>
+						<option value="10TH">10TH</option>
+						<option value="11TH">11TH</option>
+						<option value="12TH">12TH</option>
+					</select>
+				</div>
+
+				<div class="button-menu">
+					<button id="btn-ok-edit">Edit</button>
+					<button id="btn-ok-delete">Delete</button>
+					<button id="btn-cancel-edit">Cancel</button>
+				</div>
+			</div>
+		</div>
+		<div class="page hidden" id="page-confirm">
+			<div id="div-confirm">
+				<div id="confirm-box">
+					text messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext
+					messagetext messagetext messagetext messagetext messagetext message
+				</div>
+				<div id="buttons-confirm" class="div-menu">
+					<button>confirm</button>
+					<button>cancel</button>
+				</div>
+			</div>
+		</div>
+		<div class="page hidden" id="page-message">
+			<div id="div-message">
+				<div id="message-box">text message</div>
+			</div>
+		</div>
+		<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+
+		<script src="index.js"></script>
+		<script src="admin.js"></script>
+	</body>
 </html>
