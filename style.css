@@ -214,7 +214,8 @@ h3 {
   border-radius: 6px;
 }
 
-#car-line-list {
+#car-line-list, 
+#car-line-class-list {
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -232,8 +233,12 @@ h3 {
   transition: all .5s;
 }
 
+#car-line-class-list {
+  height: 80vh;
+}
 
-#car-line-list div {
+#car-line-list div,
+#car-line-class-list div {
   width: max-content;
   margin: 4px;
   cursor: pointer;

@@ -115,14 +115,69 @@ btn_classes.addEventListener('click', async e => {
 
 var btn_elementary = document.getElementById('btn-elementary')
 btn_elementary.addEventListener('click', e => {
-  check_if_exists()
-  .then(carline => {
+  document.getElementById('menu-classes').style.display = 'none'
+  document.getElementById('classes-list-div').style.display = 'flex'
+  db.ref('carlines/' + _date).on('value', snap => {
+    if (snap.exists()) {
+      _carline = snap.val()
+      var filter_elementary = i => {
+        return i.grade == 'PRE-K3' 
+        || i.grade == 'PRE-K4' 
+        || i.grade == 'K' 
+        || i.grade == '1ST' 
+        || i.grade == '2ND' 
+        || i.grade == '3RD'
+        || i.grade == '4TH'
+        || i.grade == '5TH'
+      }
+      var _elementary = _carline.filter(filter_elementary)
+      document.getElementById('car-line-class-list').innerHTML = ''
+      _elementary.reverse().forEach(update_class)
+    } else {
+      alert("Carline is empty")
+      show_page('page-home')
+    }
+  })
+})
 
+var btn_mid_high = document.getElementById('btn-middle-high')
+btn_mid_high.addEventListener('click', e => {
+  document.getElementById('menu-classes').style.display = 'none'
+  document.getElementById('classes-list-div').style.display = 'flex'
+  db.ref('carlines/' + _date).on('value', snap => {
+    if (snap.exists()) {
+      _carline = snap.val()
+      var filter_mid_high = i => {
+        return i.grade == '6TH' 
+        || i.grade == '7TH' 
+        || i.grade == '8TH' 
+        || i.grade == '9TH' 
+        || i.grade == '10TH' 
+        || i.grade == '11TH'
+        || i.grade == '12TH'
+      }
+      var _middle_high = _carline.filter(filter_mid_high)
+      document.getElementById('car-line-class-list').innerHTML = ''
+      _middle_high.reverse().forEach(update_class)
+    } else {
+      alert("Carline is empty")
+      show_page('page-home')
+    }
   })
-  .catch(() => {
-    alert('Carline is empty')
-    show_page('page-home')
-  })
+})
+
+function update_class(i) {
+  var car = i.car
+  var f_name = i.f_name
+  var grade = i.grade
+  var moment = i.moment
+  var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
+  document.getElementById('car-line-class-list').innerHTML += item
+}
+
+document.getElementById('close-page-classes').addEventListener('click', e => {
+  document.getElementById('menu-classes').style.display = 'block'
+  document.getElementById('classes-list-div').style.display = 'none'
 })
 
 var btn_admin = document.getElementById('btn-admin')
@@ -297,8 +352,6 @@ function confirm_car(_car, _students) {
   })
 }
 
-var _list
-
 function update_carline(i) {
   var car = i.car
   var f_name = i.f_name
@@ -306,7 +359,6 @@ function update_carline(i) {
   var moment = i.moment
   var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
   document.getElementById('car-line-list').innerHTML += item
-  document.getElementById('car-line-list').style.animation = 'blink .7s'
 }
 
 function toggle_keypad() {
@@ -428,19 +480,24 @@ var message_box = document.getElementById('message-box')
 
 function blink(mutations) {
   document.getElementById('car-line-list').style.backgroundColor = 'white'
+  document.getElementById('car-line-class-list').style.backgroundColor = 'white'
   setTimeout(() => {
     document.getElementById('car-line-list').style.backgroundColor = 'black'
+    document.getElementById('car-line-class-list').style.backgroundColor = 'black'
   }, 1000);
   setTimeout(() => {
     document.getElementById('car-line-list').style.backgroundColor = 'white'
+    document.getElementById('car-line-class-list').style.backgroundColor = 'white'
   }, 2000);
   setTimeout(() => {
     document.getElementById('car-line-list').style.backgroundColor = 'black'
+    document.getElementById('car-line-class-list').style.backgroundColor = 'black'
   }, 3000);
 }
 
 var observer = new MutationObserver(blink)
 observer.observe(document.getElementById('car-line-list'), {childList: true})
+observer.observe(document.getElementById('car-line-class-list'), {childList: true})
 
 // animate list background END
 
@@ -471,7 +528,6 @@ function open_grade(grade) {
     var moment = i.moment
     var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
     document.getElementById('car-line-list').innerHTML += item
-    document.getElementById('car-line-list').style.animation = 'blink .7s'
   }
 
 }
