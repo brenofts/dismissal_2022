@@ -17,10 +17,10 @@
 			</div>
 			<div id="pages">
 				<div class="page" id="page-home">
-					<h3>Menu</h3>
+					<h3>Home</h3>
 					<div class="button-menu-h">
 						<button class="btn-menu" id="btn-carline">Carline</button>
-						<button class="btn-menu" id="btn-grades">Grades</button>
+						<button class="btn-menu" id="btn-classes">Classes</button>
 						<button class="btn-menu" id="btn-search-h">Search Student</button>
 						<button class="btn-menu" id="btn-admin">admin</button>
 					</div>
@@ -38,31 +38,50 @@
 					</div>
 				</div>
 
+				<div class="page hidden" id="page-classes">
+					<h3>Classes</h3>
+					<div class="button-menu-h">
+						<button class="btn-menu" id="btn-elementary">Elementary</button>
+						<button class="btn-menu" id="btn-middle-high">Middle & High School</button>
+						<button onclick="show_page('page-home')">Home</button>
+					</div>
+
+					<div id="classes-list-div">
+						<div id="close-page-classes" onclick="show_page('page-home')">X</div>
+						<div id="car-line-class-list"></div>
+						
+					</div>
+
+				</div>
+
+
+
 				<div class="page hidden" id="page-call-car">
 					<div id="call-car-div">
 						<div id="close-page-call" onclick="show_page('page-carline')">X</div>
-						<div id="title-date"></div>
 						<div id="car-line-list"></div>
-						<div id="display">
-							<div id="screen"></div>
-						</div>
-						<div id="toggle-keypad" onclick="toggle_keypad()">ABC</div>
-						<div id="number-keypad">
-							<div class="num" id="num-1" onclick="insert_digit(1)">1</div>
-							<div class="num" id="num-2" onclick="insert_digit(2)">2</div>
-							<div class="num" id="num-3" onclick="insert_digit(3)">3</div>
-							<div class="num" id="num-4" onclick="insert_digit(4)">4</div>
-							<div class="num" id="num-5" onclick="insert_digit(5)">5</div>
-							<div class="num" id="num-6" onclick="insert_digit(6)">6</div>
-							<div class="num" id="num-7" onclick="insert_digit(7)">7</div>
-							<div class="num" id="num-8" onclick="insert_digit(8)">8</div>
-							<div class="num" id="num-9" onclick="insert_digit(9)">9</div>
-							<div class="num" id="num-0" onclick="insert_digit(0)">0</div>
-							<div id="num-ok">ok</div>
-							<div id="num-erase" onclick="erase()">⌫</div>
-						</div>
-						<div class="hidden" id="letters-keypad">
-							<div id="bus-letters"></div>
+						<div id="keyboard-display">
+							<div id="display">
+								<div id="screen"></div>
+							</div>
+							<div id="toggle-keypad" onclick="toggle_keypad()">ABC</div>
+							<div id="number-keypad">
+								<div class="num" id="num-1" onclick="insert_digit(1)">1</div>
+								<div class="num" id="num-2" onclick="insert_digit(2)">2</div>
+								<div class="num" id="num-3" onclick="insert_digit(3)">3</div>
+								<div class="num" id="num-4" onclick="insert_digit(4)">4</div>
+								<div class="num" id="num-5" onclick="insert_digit(5)">5</div>
+								<div class="num" id="num-6" onclick="insert_digit(6)">6</div>
+								<div class="num" id="num-7" onclick="insert_digit(7)">7</div>
+								<div class="num" id="num-8" onclick="insert_digit(8)">8</div>
+								<div class="num" id="num-9" onclick="insert_digit(9)">9</div>
+								<div class="num" id="num-0" onclick="insert_digit(0)">0</div>
+								<div id="num-ok">ok</div>
+								<div id="num-erase" onclick="erase()">⌫</div>
+							</div>
+							<div class="hidden" id="letters-keypad">
+								<div id="bus-letters"></div>
+							</div>
 						</div>
 					</div>
 				</div>

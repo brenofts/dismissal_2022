@@ -118,7 +118,7 @@ h3 {
 #call-car-div {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   height: 87vh;
 }
@@ -141,9 +141,9 @@ h3 {
   align-items: center;
   background-color: black;
   color: white;
-  font-size: 2em;
-  min-width: 80px;
-  min-height: 70px;
+  font-size: 16pt;
+  min-width: 55px;
+  min-height: 55px;
   border-radius: 4px;
 }
 
@@ -166,7 +166,7 @@ h3 {
   color: black;
 }
 
-#close-page-call {
+#close-page-call, #close-page-classes {
   position: absolute;
   z-index: 20;
   top: 2px;
@@ -186,6 +186,10 @@ h3 {
 .num:active, #num-ok:active, #num-erase:active {
   background-color: white;
   color: black;
+}
+
+#keyboard-display {
+  margin-top: 20vh;
 }
 
 #display {
@@ -223,7 +227,7 @@ h3 {
   overflow: hidden;
 	overflow-y: scroll;
   padding-left: 4px;
-  font-size: 9pt;
+  font-size: 12pt;
   border-radius: 6px;
   transition: all .5s;
 }
@@ -238,6 +242,12 @@ h3 {
   border-radius: 6px;
   
 }
+
+
+#classes-list-div {
+  display: none;
+}
+
 
 #div-message, #div-confirm {
   position: absolute;

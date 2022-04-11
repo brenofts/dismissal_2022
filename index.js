@@ -56,20 +56,20 @@ function show_page(id) {
 
 var input_date = document.getElementById('carline-date')
 
-function set_today() {
+async function set_today() {
   var year = new Date().getFullYear()
   var month = new Date().getMonth() + 1
   month < 10 ? month = '0' + month.toString() : null
   var day = new Date().getDate()
   day < 10 ? day = '0' + day.toString() : null
-  var today = year + '-' + month + '-' + day
-  input_date.value = today
+  _date = year + '-' + month + '-' + day
 }
 
 var btn_carline = document.getElementById('btn-carline')
-btn_carline.addEventListener('click', e => {
-  
-  set_today()
+btn_carline.addEventListener('click', async e => {
+
+  await set_today()
+  input_date.value = _date
 
   db.ref('students').once('value')
   .then(snap => {
@@ -103,6 +103,27 @@ btn_carline.addEventListener('click', e => {
   show_page('page-carline')
 })
 
+
+var btn_classes = document.getElementById('btn-classes')
+btn_classes.addEventListener('click', async e => {
+  show_page('page-classes')
+
+  await set_today()
+  document.getElementById('title-text').innerText = _date
+
+})
+
+var btn_elementary = document.getElementById('btn-elementary')
+btn_elementary.addEventListener('click', e => {
+  check_if_exists()
+  .then(carline => {
+
+  })
+  .catch(() => {
+    alert('Carline is empty')
+    show_page('page-home')
+  })
+})
 
 var btn_admin = document.getElementById('btn-admin')
 btn_admin.addEventListener('click', e => {
@@ -275,6 +296,8 @@ function confirm_car(_car, _students) {
     .catch(err => alert(err.message))
   })
 }
+
+var _list
 
 function update_carline(i) {
   var car = i.car
