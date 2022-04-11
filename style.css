@@ -239,7 +239,7 @@ h3 {
 
 #car-line-list div,
 #car-line-class-list div {
-  width: max-content;
+  max-width: 95%;
   margin: 4px;
   cursor: pointer;
   background-color: rgb(46, 46, 46);
