@@ -127,8 +127,9 @@ btn_elementary.addEventListener('click', e => {
 			document.getElementById('car-line-class-list').innerHTML = ''
 			_elementary.reverse().forEach(update_class)
 		} else {
+      document.getElementById('menu-classes').style.display = 'block'
+	    document.getElementById('classes-list-div').style.display = 'none'
 			alert('Carline is empty')
-			show_page('page-home')
 		}
 	})
 })
@@ -155,8 +156,9 @@ btn_mid_high.addEventListener('click', e => {
 			document.getElementById('car-line-class-list').innerHTML = ''
 			_middle_high.reverse().forEach(update_class)
 		} else {
+			document.getElementById('menu-classes').style.display = 'block'
+	    document.getElementById('classes-list-div').style.display = 'none'
 			alert('Carline is empty')
-			show_page('page-home')
 		}
 	})
 })
@@ -174,6 +176,52 @@ document.getElementById('close-page-classes').addEventListener('click', e => {
 	document.getElementById('menu-classes').style.display = 'block'
 	document.getElementById('classes-list-div').style.display = 'none'
 })
+
+
+function update_selected_class(i) {
+	var car = i.car
+	var f_name = i.f_name
+	var grade = i.grade
+	var moment = i.moment
+	var item = `<div >${f_name} | ${moment} | ${car} </div>`
+	document.getElementById('car-line-class-list').innerHTML += item
+}
+
+function select_class(_class) {
+  document.getElementById('menu-classes').style.display = 'none'
+	document.getElementById('classes-list-div').style.display = 'flex'
+	db.ref('carlines/' + _date).on('value', snap => {
+		if (snap.exists()) {
+			_carline = snap.val()
+			var filter_ = i => {
+				return i.grade == _class
+			}
+			var _filtered = _carline.filter(filter_)
+			document.getElementById('car-line-class-list').innerHTML = ''
+			_filtered.reverse().forEach(update_selected_class)
+		} else {
+			document.getElementById('menu-classes').style.display = 'block'
+	    document.getElementById('classes-list-div').style.display = 'none'
+			alert('Carline is empty')
+		}
+	})
+}
+
+document.getElementById('btn-pre-k3').addEventListener('click', () => select_class('PRE-K3'))
+document.getElementById('btn-pre-k4').addEventListener('click', () => select_class('PRE-K4'))
+document.getElementById('btn-k').addEventListener('click', () => select_class('K'))
+document.getElementById('btn-1st').addEventListener('click', () => select_class('1ST'))
+document.getElementById('btn-2nd').addEventListener('click', () => select_class('2ND'))
+document.getElementById('btn-3rd').addEventListener('click', () => select_class('3RD'))
+document.getElementById('btn-4th').addEventListener('click', () => select_class('4TH'))
+document.getElementById('btn-5th').addEventListener('click', () => select_class('5TH'))
+document.getElementById('btn-6th').addEventListener('click', () => select_class('6TH'))
+document.getElementById('btn-7th').addEventListener('click', () => select_class('7TH'))
+document.getElementById('btn-8th').addEventListener('click', () => select_class('8TH'))
+document.getElementById('btn-9th').addEventListener('click', () => select_class('9TH'))
+document.getElementById('btn-10th').addEventListener('click', () => select_class('10TH'))
+document.getElementById('btn-11th').addEventListener('click', () => select_class('11TH'))
+document.getElementById('btn-12th').addEventListener('click', () => select_class('12TH'))
 
 var btn_admin = document.getElementById('btn-admin')
 btn_admin.addEventListener('click', e => {
@@ -355,8 +403,26 @@ function update_carline(i) {
 	var f_name = i.f_name
 	var grade = i.grade
 	var moment = i.moment
-	var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
+	var item = `<div onclick='options("${car}")'>${grade} | ${f_name} | ${moment} | ${car} </div>`
 	document.getElementById('car-line-list').innerHTML += item
+}
+
+function options(car) {
+  db.ref('carlines/' + _date).get().then(snap => {
+    var actual_carline = snap.val()
+    var _filter = i => i.car != car
+    var _filtered = actual_carline.filter(_filter)
+
+    var confirm_text = ''
+
+    function _confirm() {
+      confirm_text = `Delete car ${car}?`
+      if (window.confirm(confirm_text)) {
+        db.ref('carlines/' + _date).set(_filtered)
+      }
+    }
+    _confirm()    
+  })
 }
 
 function toggle_keypad() {

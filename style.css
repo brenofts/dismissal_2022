@@ -79,7 +79,8 @@ button:active {
   padding: .5em;
   padding-bottom: 2em;
   background-color: rgb(97, 161, 113);
-  height: 95vh;
+  height: max-content;
+  min-height: 96vh;
 }
 
 .button-menu {
