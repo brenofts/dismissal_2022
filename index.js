@@ -1,13 +1,13 @@
 // firebase configuration
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyDoUcPh4_4QiDXXCFI5RVQwBj_aomGvLmA',
-	// databaseURL: "https://bis-dimissal-default-rtdb.firebaseio.com",
-	authDomain: 'bis-dismissal.firebaseapp.com',
-	projectId: 'bis-dismissal',
-	storageBucket: 'bis-dismissal.appspot.com',
-	messagingSenderId: '1019941316312',
-	appId: '1:1019941316312:web:92e539af021728e6d419ad',
+	apiKey: "AIzaSyCXiykSv08W9sPt4gh88mcN7NZKnid9ysM",
+  authDomain: "dismissal-bis.firebaseapp.com",
+  databaseURL: "https://dismissal-bis-default-rtdb.firebaseio.com",
+  projectId: "dismissal-bis",
+  storageBucket: "dismissal-bis.appspot.com",
+  messagingSenderId: "192785460392",
+  appId: "1:192785460392:web:bc9b36b03f97c34faf269d"
 }
 firebase.initializeApp(firebaseConfig)
 const db = firebase.database()
@@ -24,27 +24,24 @@ function show_page(id) {
 
 	pages.forEach(i => i.classList.add('hidden'))
 
-	var page = document.getElementById(id)
+	document.getElementById(id).classList.remove('hidden')
 
-	page.classList.remove('hidden')
-
-	switch (id) {
-		case 'page-admin':
-			document.getElementById('title-text').innerText = 'Admin Page'
-			break
-		case 'page-home':
-			document.getElementById('title-text').innerText = 'Dismissal'
-			break
-		case 'page-call-car':
-			document.getElementById('title-text').innerText = _date
-			break
-
-		default:
-			break
-	}
+	if (id == 'page-home') document.getElementById('title-text').innerText = 'Dismissal'
+	
 }
 
 //end navigation
+
+//global variables
+
+var students = []
+var _date
+var _carline = []
+var bus_letters = []
+var home
+var local
+
+//end global variables
 
 //home page buttons
 
@@ -59,8 +56,7 @@ async function set_today() {
 	_date = year + '-' + month + '-' + day
 }
 
-var btn_carline = document.getElementById('btn-carline')
-btn_carline.addEventListener('click', async e => {
+async function open_carline() {
 	await set_today()
 	input_date.value = _date
 
@@ -92,139 +88,35 @@ btn_carline.addEventListener('click', async e => {
 			})
 		})
 		.catch(err => alert(err.message))
-
+	
 	show_page('page-carline')
+}
+
+
+var btn_carline = document.getElementById('btn-carline')
+btn_carline.addEventListener('click', () => {
+	local = 'carline'
+	document.getElementById('title-text').innerText += ' ' + local
+	open_carline()
+})
+var btn_front_office = document.getElementById('btn-front-office')
+btn_front_office.addEventListener('click', () => {
+	local = 'front-office'
+	document.getElementById('title-text').innerText += ' ' + local
+	open_carline()
 })
 
 var btn_classes = document.getElementById('btn-classes')
 btn_classes.addEventListener('click', async e => {
-	show_page('page-classes')
-
 	await set_today()
 	document.getElementById('title-text').innerText = _date
+	show_page('page-classes')
 })
 
-var btn_elementary = document.getElementById('btn-elementary')
-btn_elementary.addEventListener('click', e => {
-	document.getElementById('menu-classes').style.display = 'none'
-	document.getElementById('classes-list-div').style.display = 'flex'
-	db.ref('carlines/' + _date).on('value', snap => {
-		if (snap.exists()) {
-			_carline = snap.val()
-			var filter_elementary = i => {
-				return (
-					i.grade == 'PRE-K3' ||
-					i.grade == 'PRE-K4' ||
-					i.grade == 'K' ||
-					i.grade == '1ST' ||
-					i.grade == '2ND' ||
-					i.grade == '3RD' ||
-					i.grade == '4TH' ||
-					i.grade == '5TH'
-				)
-			}
-			var _elementary = _carline.filter(filter_elementary)
-			document.getElementById('car-line-class-list').innerHTML = ''
-			_elementary.reverse().forEach(update_class)
-		} else {
-      document.getElementById('menu-classes').style.display = 'block'
-	    document.getElementById('classes-list-div').style.display = 'none'
-			alert('Carline is empty')
-		}
-	})
-})
-
-var btn_mid_high = document.getElementById('btn-middle-high')
-btn_mid_high.addEventListener('click', e => {
-	document.getElementById('menu-classes').style.display = 'none'
-	document.getElementById('classes-list-div').style.display = 'flex'
-	db.ref('carlines/' + _date).on('value', snap => {
-		if (snap.exists()) {
-			_carline = snap.val()
-			var filter_mid_high = i => {
-				return (
-					i.grade == '6TH' ||
-					i.grade == '7TH' ||
-					i.grade == '8TH' ||
-					i.grade == '9TH' ||
-					i.grade == '10TH' ||
-					i.grade == '11TH' ||
-					i.grade == '12TH'
-				)
-			}
-			var _middle_high = _carline.filter(filter_mid_high)
-			document.getElementById('car-line-class-list').innerHTML = ''
-			_middle_high.reverse().forEach(update_class)
-		} else {
-			document.getElementById('menu-classes').style.display = 'block'
-	    document.getElementById('classes-list-div').style.display = 'none'
-			alert('Carline is empty')
-		}
-	})
-})
-
-function update_class(i) {
-	var car = i.car
-	var f_name = i.f_name
-	var grade = i.grade
-	var moment = i.moment
-	var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
-	document.getElementById('car-line-class-list').innerHTML += item
-}
-
-document.getElementById('close-page-classes').addEventListener('click', e => {
-	document.getElementById('menu-classes').style.display = 'block'
-	document.getElementById('classes-list-div').style.display = 'none'
-})
-
-
-function update_selected_class(i) {
-	var car = i.car
-	var f_name = i.f_name
-	var grade = i.grade
-	var moment = i.moment
-	var item = `<div >${f_name} | ${moment} | ${car} </div>`
-	document.getElementById('car-line-class-list').innerHTML += item
-}
-
-function select_class(_class) {
-  document.getElementById('menu-classes').style.display = 'none'
-	document.getElementById('classes-list-div').style.display = 'flex'
-	db.ref('carlines/' + _date).on('value', snap => {
-		if (snap.exists()) {
-			_carline = snap.val()
-			var filter_ = i => {
-				return i.grade == _class
-			}
-			var _filtered = _carline.filter(filter_)
-			document.getElementById('car-line-class-list').innerHTML = ''
-			_filtered.reverse().forEach(update_selected_class)
-		} else {
-			document.getElementById('menu-classes').style.display = 'block'
-	    document.getElementById('classes-list-div').style.display = 'none'
-			alert('Carline is empty')
-		}
-	})
-}
-
-document.getElementById('btn-pre-k3').addEventListener('click', () => select_class('PRE-K3'))
-document.getElementById('btn-pre-k4').addEventListener('click', () => select_class('PRE-K4'))
-document.getElementById('btn-k').addEventListener('click', () => select_class('K'))
-document.getElementById('btn-1st').addEventListener('click', () => select_class('1ST'))
-document.getElementById('btn-2nd').addEventListener('click', () => select_class('2ND'))
-document.getElementById('btn-3rd').addEventListener('click', () => select_class('3RD'))
-document.getElementById('btn-4th').addEventListener('click', () => select_class('4TH'))
-document.getElementById('btn-5th').addEventListener('click', () => select_class('5TH'))
-document.getElementById('btn-6th').addEventListener('click', () => select_class('6TH'))
-document.getElementById('btn-7th').addEventListener('click', () => select_class('7TH'))
-document.getElementById('btn-8th').addEventListener('click', () => select_class('8TH'))
-document.getElementById('btn-9th').addEventListener('click', () => select_class('9TH'))
-document.getElementById('btn-10th').addEventListener('click', () => select_class('10TH'))
-document.getElementById('btn-11th').addEventListener('click', () => select_class('11TH'))
-document.getElementById('btn-12th').addEventListener('click', () => select_class('12TH'))
 
 var btn_admin = document.getElementById('btn-admin')
 btn_admin.addEventListener('click', e => {
+	document.getElementById('title-text').innerText = 'Admin Page'
 	show_page('page-admin')
 	home = false
 })
@@ -232,9 +124,6 @@ btn_admin.addEventListener('click', e => {
 //end home page buttons
 
 // carline
-
-var _date
-var _carline = []
 
 function select_date() {
 	_date = input_date.value
@@ -245,9 +134,11 @@ function select_date() {
 				document.getElementById('screen').innerHTML = ''
 				document.getElementById('car-line-list').innerHTML = ''
 				carline.reverse().map(update_carline)
+				document.getElementById('title-text').innerText = _date + ' ' + local
 				show_page('page-call-car')
 			})
 			.catch(() => {
+				document.getElementById('title-text').innerText = _date + ' ' + local
 				show_page('page-call-car')
 			})
 	} else {
@@ -256,15 +147,12 @@ function select_date() {
 }
 
 function watch_carline() {
-	db.ref('carlines/' + _date).on('value', snap => {
+	db.ref('carlines/' + _date + '/global').on('value', snap => {
 		document.getElementById('car-line-list').innerHTML = ''
 		var list = snap.val()
 		list.reverse().map(update_carline)
+		blink('car-line-list')
 	})
-}
-
-function create_carline() {
-	show_page('page-call-car')
 }
 
 var screen = document.getElementById('screen')
@@ -289,12 +177,9 @@ function erase() {
 	}
 }
 
-var students = []
-var bus_letters = []
-
 function call_car() {
+	
 	if (screen.innerText != '') {
-		var confirm_text = ''
 		var _car = screen.innerText
 
     var students_in_car = []
@@ -318,8 +203,9 @@ function call_car() {
         function write_names(student) {
           var _name = student.f_name + ' - ' + student.grade
           names_in_car.push(_name)
+					student.local = local
           student.car = _car
-          student.moment = new Date().toLocaleTimeString()
+          student.time = new Date().toLocaleTimeString()
           _students.push(student)
         }
   
@@ -327,10 +213,14 @@ function call_car() {
   
         function _confirm() {
           var _names = names_in_car.join(', ')
-          confirm_text = `CAR:\n${_car}\nSTUDENTS:\n${_names}`
-          if (window.confirm(confirm_text)) {
-            confirm_car(_car, _students)
-          }
+					confirm_students = _students
+					car_called = _car
+          
+          document.getElementById('index').classList.add('hidden')
+          document.getElementById('div-card-confirm').style.display = 'flex'
+          document.getElementById('car-number').innerText = _car
+          document.getElementById('car-students').innerText = _names
+
         }
   
         _confirm()
@@ -342,11 +232,39 @@ function call_car() {
 	}
 }
 
-document.getElementById('num-ok').addEventListener('click', call_car)
+document.getElementById('cancel-confirm').addEventListener('click', () => {
+	document.getElementById('index').classList.remove('hidden')
+	document.getElementById('div-card-confirm').style.display = 'none'
+	document.getElementById('car-number').innerText = ''
+	document.getElementById('car-students').innerText = ''
+	document.getElementById('screen').innerText = ''
+})
+
+var confirm_students, car_called, bus_called
+
+document.getElementById('ok-confirm').addEventListener('click', () => {
+	if(car_or_bus == 'car') {
+		confirm_car(car_called, confirm_students)
+	} else {
+		confirm_bus(bus_called, confirm_students)
+	}
+	document.getElementById('index').classList.remove('hidden')
+	document.getElementById('div-card-confirm').style.display = 'none'
+	document.getElementById('car-number').innerText = ''
+	document.getElementById('car-students').innerText = ''
+	document.getElementById('screen').innerText = ''
+})
+
+var car_or_bus
+
+document.getElementById('num-ok').addEventListener('click', () => {
+	car_or_bus = 'car'
+	call_car()
+})
 
 function check_if_exists() {
 	return new Promise((resolve, reject) => {
-		db.ref('carlines/' + _date)
+		db.ref('carlines/' + _date + '/global')
 			.get()
 			.then(snap => {
 				watch_carline()
@@ -366,7 +284,7 @@ function confirm_car(_car, _students) {
 			carline.forEach(student => _cars.push(student.car))
 			if (!_cars.includes(_car)) {
 				updated_carline = carline.concat(_students)
-				db.ref('carlines/' + _date)
+				db.ref('carlines/' + _date + '/global')
 					.set(updated_carline)
 					.then(() => {
 						document.getElementById('car-line-list').innerHTML = ''
@@ -377,12 +295,13 @@ function confirm_car(_car, _students) {
 							left: 0,
 							behavior: 'smooth',
 						})
+						update_(updated_carline)
 					})
 					.catch(err => alert(err.message))
 			} else alert('Car ' + _car + ' has been called already')
 		})
 		.catch(() => {
-			db.ref('carlines/' + _date)
+			db.ref('carlines/' + _date + '/global')
 				.set(_students)
 				.then(() => {
 					document.getElementById('car-line-list').innerHTML = ''
@@ -393,6 +312,7 @@ function confirm_car(_car, _students) {
 						left: 0,
 						behavior: 'smooth',
 					})
+					update_(_students)
 				})
 				.catch(err => alert(err.message))
 		})
@@ -402,13 +322,15 @@ function update_carline(i) {
 	var car = i.car
 	var f_name = i.f_name
 	var grade = i.grade
-	var moment = i.moment
-	var item = `<div onclick='options("${car}")'>${grade} | ${f_name} | ${moment} | ${car} </div>`
+	var time = i.time.substring(0, 5)
+	var _local = i.local
+	if (time.slice(-1) == ":") time = time.slice(0, -1)
+	var item = `<div class=${_local} onclick='options("${car}")'>${grade} | ${f_name} | ${time} | ${car} </div>`
 	document.getElementById('car-line-list').innerHTML += item
 }
 
 function options(car) {
-  db.ref('carlines/' + _date).get().then(snap => {
+  db.ref('carlines/' + _date + '/global').get().then(snap => {
     var actual_carline = snap.val()
     var _filter = i => i.car != car
     var _filtered = actual_carline.filter(_filter)
@@ -418,7 +340,9 @@ function options(car) {
     function _confirm() {
       confirm_text = `Delete car ${car}?`
       if (window.confirm(confirm_text)) {
-        db.ref('carlines/' + _date).set(_filtered)
+        db.ref('carlines/' + _date + '/global').set(_filtered)
+				var _filtered_reversed = _filtered.reverse()
+				update_(_filtered_reversed)
       }
     }
     _confirm()    
@@ -441,6 +365,7 @@ function toggle_keypad() {
 }
 
 function call_bus(_bus) {
+	car_or_bus = 'bus'
 	//FIND BUS' STUDENTS
 	var read_bus = student => student.bus.includes(_bus)
 	var students_in_bus = students.filter(read_bus)
@@ -454,7 +379,8 @@ function call_bus(_bus) {
 			var _name = student.f_name + ' - ' + student.grade
 			names_in_bus.push(_name)
 			student.car = _bus
-			student.moment = new Date().toLocaleTimeString()
+			student.time = new Date().toLocaleTimeString()
+			student.local = local
 			_students.push(student)
 		}
 
@@ -462,10 +388,13 @@ function call_bus(_bus) {
 
 		function _confirm() {
 			var _names = names_in_bus.join(', ')
-			confirm_text = `BUS:\n${_bus}\nSTUDENTS:\n${_names}`
-			if (window.confirm(confirm_text)) {
-				confirm_bus(_bus, _students)
-			}
+			confirm_students = _students
+			bus_called = _bus
+			
+			document.getElementById('index').classList.add('hidden')
+			document.getElementById('div-card-confirm').style.display = 'flex'
+			document.getElementById('car-number').innerText = _bus
+			document.getElementById('car-students').innerText = _names
 		}
 
 		_confirm()
@@ -473,9 +402,6 @@ function call_bus(_bus) {
 }
 
 function confirm_bus(_bus, _students) {
-	//CONTINUE FROM HERE
-	//COLLECT CARLINE INFO AND UPADATE
-	//CHECK CONFIRM_CAR()
 	var updated_carline
 	check_if_exists()
 		.then(carline => {
@@ -483,7 +409,7 @@ function confirm_bus(_bus, _students) {
 			carline.forEach(student => _buses.push(student.car))
 			if (!_buses.includes(_bus)) {
 				updated_carline = carline.concat(_students)
-				db.ref('carlines/' + _date)
+				db.ref('carlines/' + _date + '/global')
 					.set(updated_carline)
 					.then(() => {
 						document.getElementById('car-line-list').innerHTML = ''
@@ -494,12 +420,13 @@ function confirm_bus(_bus, _students) {
 							left: 0,
 							behavior: 'smooth',
 						})
+						update_(updated_carline)
 					})
 					.catch(err => alert(err.message))
 			} else alert('Bus ' + _bus + ' has been called already')
 		})
 		.catch(() => {
-			db.ref('carlines/' + _date)
+			db.ref('carlines/' + _date + '/global')
 				.set(_students)
 				.then(() => {
 					document.getElementById('car-line-list').innerHTML = ''
@@ -510,79 +437,242 @@ function confirm_bus(_bus, _students) {
 						left: 0,
 						behavior: 'smooth',
 					})
+					update_(_students)
 				})
 				.catch(err => alert(err.message))
 		})
 }
 
+function update_(updated_carline) {
+	var _elementary_list = []
+	var _mid_high_list = []
+	var _mid_list = []
+	var _high_list = []
+	var _prek3_list = []
+	var _prek4_list = []
+	var _k_list = []
+	var _1st_list = []
+	var _2nd_list = []
+	var _3rd_list = []
+	var _4th_list = []
+	var _5th_list = []
+	var _6th_list = []
+	var _7th_list = []
+	var _8th_list = []
+	var _9th_list = []
+	var _10th_list = []
+	var _11th_list = []
+	var _12th_list = []
+	if (updated_carline.length > 0) {
+		updated_carline.map(i => {
+			var _grade = i.grade.trim()
+			switch (_grade) {
+				case 'PRE-K3':
+						_elementary_list.push(i)
+						_prek3_list.push(i)
+					break;
+				case 'PRE-K4':
+						_elementary_list.push(i)
+						_prek4_list.push(i)
+					break;
+				case 'K':
+						_elementary_list.push(i)
+						_k_list.push(i)
+					break;
+				case '1ST':
+						_elementary_list.push(i)
+						_1st_list.push(i)
+					break;
+				case '2ND':
+						_elementary_list.push(i)
+						_2nd_list.push(i)
+					break;
+				case '3RD':
+						_elementary_list.push(i)
+						_3rd_list.push(i)
+					break;
+				case '4TH':
+						_elementary_list.push(i)
+						_4th_list.push(i)
+					break;
+				case '5TH':
+						_elementary_list.push(i)
+						_5th_list.push(i)
+					break;
+				case '6TH':
+						_mid_high_list.push(i)
+						_mid_list.push(i)
+						_6th_list.push(i)
+					break;
+				case '7TH':
+						_mid_high_list.push(i)
+						_mid_list.push(i)
+						_7th_list.push(i)
+					break;
+				case '8TH':
+						_mid_high_list.push(i)
+						_mid_list.push(i)
+						_8th_list.push(i)
+					break;
+				case '9TH':
+						_mid_high_list.push(i)
+						_high_list.push(i)
+						_9th_list.push(i)
+					break;
+				case '10TH':
+						_mid_high_list.push(i)
+						_high_list.push(i)
+						_10th_list.push(i)
+					break;
+				case '11TH':
+						_mid_high_list.push(i)
+						_high_list.push(i)
+						_11th_list.push(i)
+					break;
+				case '12TH':
+						_mid_high_list.push(i)
+						_high_list.push(i)
+						_12th_list.push(i)
+					break;
+				
+				default:
+					break;
+			}
+		})
+	}
+	var updates = {}
+		updates['carlines/' + _date + '/elementary/'] = _elementary_list
+		updates['carlines/' + _date + '/mid-high/'] = _mid_high_list
+		updates['carlines/' + _date + '/mid/'] = _mid_list
+		updates['carlines/' + _date + '/high/'] = _high_list
+		updates['carlines/' + _date + '/k/'] = _k_list
+		updates['carlines/' + _date + '/pre-k3/'] = _prek3_list
+		updates['carlines/' + _date + '/pre-k4/'] = _prek4_list
+		updates['carlines/' + _date + '/1st/'] = _1st_list
+		updates['carlines/' + _date + '/2nd/'] = _2nd_list
+		updates['carlines/' + _date + '/3rd/'] = _3rd_list
+		updates['carlines/' + _date + '/4th/'] = _4th_list
+		updates['carlines/' + _date + '/5th/'] = _5th_list
+		updates['carlines/' + _date + '/6th/'] = _6th_list
+		updates['carlines/' + _date + '/7th/'] = _7th_list
+		updates['carlines/' + _date + '/8th/'] = _8th_list
+		updates['carlines/' + _date + '/9th/'] = _9th_list
+		updates['carlines/' + _date + '/10th/'] = _10th_list
+		updates['carlines/' + _date + '/11th/'] = _11th_list
+		updates['carlines/' + _date + '/12th/'] = _12th_list
+		db.ref().update(updates).then(e => console.log(e)).catch(e => alert(e.message))
+}
+
 // end carline
+
+//classes
+
+var actual_class
+var group
+
+function show_class(id) {
+
+	if (id == 'elementary' ||
+			id == 'mid-high' ||
+			id == 'mid' ||
+			id == 'high') {
+				group = true
+			} else {
+				group = false
+			}
+	
+	var html_collection = document.getElementsByClassName('class-list')
+	var classes = Array.prototype.slice.call(html_collection)
+
+	classes.forEach(i => i.style.display = 'none')
+
+	document.getElementById(id).style.display = 'flex'
+	document.getElementById('classes-list-div').style.display = 'flex'
+	document.getElementById('menu-classes').style.display = 'none'
+
+	document.getElementById(id).innerHTML = 'Loading...'
+	
+	db.ref('carlines/' + _date + '/' + id).on('value', snap => {
+		if (snap.exists()) {
+			var class_list = snap.val()
+			document.getElementById(id).innerHTML = ''
+			actual_class = id
+			class_list.forEach(write_list)
+			blink(id)
+		} else {
+			document.getElementById(id).innerHTML = ''
+			document.getElementById(id).innerHTML = "Nobody from " + id + " has been called yet."
+		}
+	})
+
+}
+
+function write_list(i) {
+	var f_name = i.f_name
+	var l_name = i.l_name
+	var grade = i.grade
+	var time = i.time.substring(0, 5)
+	if (time.slice(-1) == ":") time = time.slice(0, -1)
+	var _local = i.local
+	var item = group ? 
+						`<div class=${_local}>${grade} | ${f_name} ${l_name} | ${time} </div>` :
+						`<div class=${_local}>${f_name} ${l_name} | ${time} </div>`
+	document.getElementById(actual_class).innerHTML += item
+}
+
+document.getElementById('close-page-classes').addEventListener('click', e => {
+	document.getElementById('menu-classes').style.display = 'block'
+	document.getElementById('classes-list-div').style.display = 'none'
+	db.ref('carlines/' + _date).off()
+})
+
+document.getElementById('btn-elementary').addEventListener('click', () => show_class('elementary'))
+document.getElementById('btn-middle-high').addEventListener('click', () => show_class('mid-high'))
+document.getElementById('btn-middle').addEventListener('click', () => show_class('mid'))
+document.getElementById('btn-high').addEventListener('click', () => show_class('high'))
+document.getElementById('btn-pre-k3').addEventListener('click', () => show_class('pre-k3'))
+document.getElementById('btn-pre-k4').addEventListener('click', () => show_class('pre-k4'))
+document.getElementById('btn-k').addEventListener('click', () => show_class('k'))
+document.getElementById('btn-1st').addEventListener('click', () => show_class('1st'))
+document.getElementById('btn-2nd').addEventListener('click', () => show_class('2nd'))
+document.getElementById('btn-3rd').addEventListener('click', () => show_class('3rd'))
+document.getElementById('btn-4th').addEventListener('click', () => show_class('4th'))
+document.getElementById('btn-5th').addEventListener('click', () => show_class('5th'))
+document.getElementById('btn-6th').addEventListener('click', () => show_class('6th'))
+document.getElementById('btn-7th').addEventListener('click', () => show_class('7th'))
+document.getElementById('btn-8th').addEventListener('click', () => show_class('8th'))
+document.getElementById('btn-9th').addEventListener('click', () => show_class('9th'))
+document.getElementById('btn-10th').addEventListener('click', () => show_class('10th'))
+document.getElementById('btn-11th').addEventListener('click', () => show_class('11th'))
+document.getElementById('btn-12th').addEventListener('click', () => show_class('12th'))
+
+
+//end classes
+
+//background animation
+
+function blink(id) {
+	document.getElementById(id).style.backgroundColor = 'white'
+	setTimeout(() => {
+		document.getElementById(id).style.backgroundColor = 'black'
+	}, 1000)
+	setTimeout(() => {
+		document.getElementById(id).style.backgroundColor = 'white'
+	}, 2000)
+	setTimeout(() => {
+		document.getElementById(id).style.backgroundColor = 'black'
+	}, 3000)
+}
+
+//background animation end
+
 
 // search student home page
 var btn_search_home = document.getElementById('btn-search-h')
 btn_search_home.addEventListener('click', () => open_search())
 
-var home
-
 function open_search() {
 	document.getElementById('edit-title').innerText = 'Search student'
 	show_page('page-edit-student')
 	home = true
-}
-
-// alert message
-var div_message = document.getElementById('div-message')
-var message_box = document.getElementById('message-box')
-
-// animate list background
-
-function blink(mutations) {
-	document.getElementById('car-line-list').style.backgroundColor = 'white'
-	document.getElementById('car-line-class-list').style.backgroundColor = 'white'
-	setTimeout(() => {
-		document.getElementById('car-line-list').style.backgroundColor = 'black'
-		document.getElementById('car-line-class-list').style.backgroundColor = 'black'
-	}, 1000)
-	setTimeout(() => {
-		document.getElementById('car-line-list').style.backgroundColor = 'white'
-		document.getElementById('car-line-class-list').style.backgroundColor = 'white'
-	}, 2000)
-	setTimeout(() => {
-		document.getElementById('car-line-list').style.backgroundColor = 'black'
-		document.getElementById('car-line-class-list').style.backgroundColor = 'black'
-	}, 3000)
-}
-
-var observer = new MutationObserver(blink)
-observer.observe(document.getElementById('car-line-list'), { childList: true })
-observer.observe(document.getElementById('car-line-class-list'), { childList: true })
-
-// animate list background END
-
-// filter grades to display
-
-function open_grade(grade) {
-	var _grade = '4TH'
-
-	db.ref('carlines/2022-03-29').on('value', snap => {
-		document.getElementById('car-line-list').innerHTML = ''
-		var all_grades = snap.val()
-
-		var filter_grade = i => i.grade === _grade
-
-		var filtered_list = all_grades.filter(filter_grade)
-
-		filtered_list.map(update_list)
-	})
-
-	// continue from here
-	// create a new car-line-list on grades' page
-
-	function update_list(i) {
-		var car = i.car
-		var f_name = i.f_name
-		var grade = i.grade
-		var moment = i.moment
-		var item = `<div >${grade} | ${f_name} | ${moment} | ${car} </div>`
-		document.getElementById('car-line-list').innerHTML += item
-	}
 }

@@ -11,7 +11,7 @@
 		<title>Dismissal</title>
 	</head>
 	<body>
-		<div class="index">
+		<div class="index" id="index">
 			<div id="title">
 				<h2 id="title-text">DISMISSAL</h2>
 			</div>
@@ -20,8 +20,10 @@
 					<h3>Home</h3>
 					<div class="button-menu-h">
 						<button class="btn-menu" id="btn-carline">Carline</button>
+						<button class="btn-menu" id="btn-front-office">Front Office</button>
 						<button class="btn-menu" id="btn-classes">Classes</button>
 						<button class="btn-menu" id="btn-search-h">Search Student</button>
+						<button class="btn-menu" id="btn-search-car">Search Car</button>
 						<button class="btn-menu" id="btn-admin">admin</button>
 					</div>
 				</div>
@@ -46,6 +48,8 @@
 						<div class="button-menu-h">
 							<button class="btn-menu" id="btn-elementary">Elementary</button>
 							<button class="btn-menu" id="btn-middle-high">Middle & High School</button>
+							<button class="btn-menu" id="btn-middle">Middle School</button>
+							<button class="btn-menu" id="btn-high">High School</button>
 							<button class="btn-menu" id="btn-pre-k3">PRE-K3</button>
 							<button class="btn-menu" id="btn-pre-k4">pre-k4</button>
 							<button class="btn-menu" id="btn-k">k</button>
@@ -68,7 +72,27 @@
 
 					<div id="classes-list-div">
 						<div id="close-page-classes">X</div>
-						<div id="car-line-class-list"></div>
+						<div id="classes-lists">
+							<div class="class-list" id="elementary">elementary-list</div>
+							<div class="class-list" id="mid-high">mid-high-list</div>
+							<div class="class-list" id="mid">mid-list</div>
+							<div class="class-list" id="high">high-list</div>
+							<div class="class-list" id="pre-k3">pre-k3-list</div>
+							<div class="class-list" id="pre-k4">pre-k4-list</div>
+							<div class="class-list" id="k">k</div>
+							<div class="class-list" id="1st">1</div>
+							<div class="class-list" id="2nd">2</div>
+							<div class="class-list" id="3rd">3</div>
+							<div class="class-list" id="4th">4</div>
+							<div class="class-list" id="5th">5</div>
+							<div class="class-list" id="6th">6</div>
+							<div class="class-list" id="7th">7</div>
+							<div class="class-list" id="8th">8</div>
+							<div class="class-list" id="9th">9</div>
+							<div class="class-list" id="10th">10</div>
+							<div class="class-list" id="11th">11</div>
+							<div class="class-list" id="12th">12</div>
+						</div>
 						
 					</div>
 
@@ -221,6 +245,32 @@
 				<div id="message-box">text message</div>
 			</div>
 		</div>
+
+
+		<div class="hidden" id="div-card-confirm">
+			<div  id="card-confirm">
+				
+				<h4>CONFIRM CAR <span id="local"></span></h4>
+		<div id="car-number"></div>
+		<div id="car-students"></div>
+		<!-- <div id="form-confirm">
+				<input type="radio" id="carline" name="local">
+				<label for="carline">
+						CARLINE
+				</label>
+				<input type="radio" id="front-office" name="local">
+				<label for="front-office">
+						FRONT OFFICE
+				</label>
+			</div> -->
+			<div id="confirm-buttons">
+					<button id="ok-confirm">OK</button>
+					<button id="cancel-confirm">CANCEL</button>
+			</div>
+		</div>
+		</div>
+
+
 		<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-database.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>

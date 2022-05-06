@@ -215,8 +215,7 @@ h3 {
   border-radius: 6px;
 }
 
-#car-line-list, 
-#car-line-class-list {
+#car-line-list {
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -234,10 +233,24 @@ h3 {
   transition: all .5s;
 }
 
-#car-line-class-list {
+.class-list{
   height: 80vh;
+  z-index: 10;
+  flex-direction: column;
+  position: absolute;
+  top: 40px;
+  background-color: black;
+  color: white;
+  width: 95vw;
+  overflow: hidden;
+	overflow-y: scroll;
+  padding-left: 4px;
+  font-size: 12pt;
+  border-radius: 6px;
+  transition: all .5s;
 }
 
+.class-list div,
 #car-line-list div,
 #car-line-class-list div {
   max-width: 95%;
@@ -246,9 +259,11 @@ h3 {
   background-color: rgb(46, 46, 46);
   padding: 5px;
   border-radius: 6px;
-  
 }
 
+.front-office {
+  color: yellow;
+}
 
 #classes-list-div {
   display: none;
@@ -291,6 +306,83 @@ h3 {
   font-size: 8pt;
 }
 
+#div-card-confirm {
+  display: none;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  background-color: rgb(69, 91, 74);
+  height: 100vh;
+}
+
+#card-confirm {
+  background-color: black;
+  border: 7px solid rgb(78, 128, 90);
+  border-radius: 4px;
+  color: white;
+  width: 320px;
+  text-align: center;
+}
+
+#card-confirm h4 {
+  background-color: rgb(78, 128, 90);
+  padding-bottom: 5px;
+}
+
+#car-number {
+  padding-top: 10px;
+  font-size: 35pt;
+  font-weight: bold;
+  text-align: center;
+}
+
+#car-students {
+  font-size: 10pt;
+  margin: 5px;
+}
+
+#form-confirm {
+  background-color: rgb(63, 63, 63);
+  margin-top: 20px;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#form-confirm label {
+  margin: 10px;
+  padding: 10px;
+  background-color: grey;
+  color: rgb(194, 194, 194);
+  border-radius: 4px;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+#form-confirm input {
+  display: none;
+}
+
+#form-confirm input:checked+label {
+  background-color: yellow;
+  border: 2px solid yellow;
+  border-radius: 4px;
+  color: black;
+}
+
+#confirm-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgb(63, 63, 63);
+}
+
+#confirm-buttons button {
+  width: 120px;
+}
 .hidden {
   display: none;
 }
