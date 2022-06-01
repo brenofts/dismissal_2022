@@ -1,13 +1,13 @@
 // firebase configuration
 
 const firebaseConfig = {
-	apiKey: "AIzaSyCXiykSv08W9sPt4gh88mcN7NZKnid9ysM",
-  authDomain: "dismissal-bis.firebaseapp.com",
-  databaseURL: "https://dismissal-bis-default-rtdb.firebaseio.com",
-  projectId: "dismissal-bis",
-  storageBucket: "dismissal-bis.appspot.com",
-  messagingSenderId: "192785460392",
-  appId: "1:192785460392:web:bc9b36b03f97c34faf269d"
+	apiKey: "AIzaSyDoUcPh4_4QiDXXCFI5RVQwBj_aomGvLmA",
+  authDomain: "bis-dismissal.firebaseapp.com",
+  databaseURL: "https://bis-dismissal-default-rtdb.firebaseio.com",
+  projectId: "bis-dismissal",
+  storageBucket: "bis-dismissal.appspot.com",
+  messagingSenderId: "1019941316312",
+  appId: "1:1019941316312:web:92e539af021728e6d419ad"
 }
 firebase.initializeApp(firebaseConfig)
 const db = firebase.database()
@@ -27,6 +27,8 @@ function show_page(id) {
 	document.getElementById(id).classList.remove('hidden')
 
 	if (id == 'page-home') document.getElementById('title-text').innerText = 'Dismissal'
+
+	home = true
 	
 }
 
@@ -57,10 +59,8 @@ async function set_today() {
 }
 
 async function open_carline() {
-	await set_today()
 	input_date.value = _date
-
-	db.ref('students')
+	db.ref('students/data')
 		.once('value')
 		.then(snap => {
 			students = snap.val()
@@ -68,8 +68,10 @@ async function open_carline() {
 			// CATCH BUS LETTERS
 			var all_buses = []
 			var look_for_bus = i => {
-				if (i.bus[0] != '0') {
-					i.bus.forEach(item => all_buses.push(item))
+				
+				if (i[4] != '0' && i[4] != '') {
+					var _array = i[4].split(',')
+					_array.forEach(item => all_buses.push(item.trim()))
 				}
 			}
 			students.forEach(look_for_bus)
@@ -108,7 +110,6 @@ btn_front_office.addEventListener('click', () => {
 
 var btn_classes = document.getElementById('btn-classes')
 btn_classes.addEventListener('click', async e => {
-	await set_today()
 	document.getElementById('title-text').innerText = _date
 	show_page('page-classes')
 })
@@ -186,12 +187,13 @@ function call_car() {
 
     var students_copy = []
 
-    db.ref('students').get().then(snap => {
+    db.ref('students/data').get().then(snap => {
       students_copy = snap.val()
   
       students_copy
       .map(student => {
-        var _filtered = student.car.filter(i => i == _car)
+		var student_cars = student[3].split(',')
+        var _filtered = student_cars.filter(i => i.trim() == _car)
         if (_filtered.length > 0) students_in_car.push(student)
       })
   
@@ -201,11 +203,11 @@ function call_car() {
         var names_in_car = []
   
         function write_names(student) {
-          var _name = student.f_name + ' - ' + student.grade
+          var _name = student[1] + ' - ' + student[2]
           names_in_car.push(_name)
-					student.local = local
-          student.car = _car
-          student.time = new Date().toLocaleTimeString()
+					student[5] = local
+          student[3] = _car
+          student[6] = new Date().toLocaleTimeString()
           _students.push(student)
         }
   
@@ -319,11 +321,11 @@ function confirm_car(_car, _students) {
 }
 
 function update_carline(i) {
-	var car = i.car
-	var f_name = i.f_name
-	var grade = i.grade
-	var time = i.time.substring(0, 5)
-	var _local = i.local
+	var car = i[3]
+	var f_name = i[1]
+	var grade = i[2]
+	var time = i[6].substring(0, 5)
+	var _local = i[5]
 	if (time.slice(-1) == ":") time = time.slice(0, -1)
 	var item = `<div class=${_local} onclick='options("${car}")'>${grade} | ${f_name} | ${time} | ${car} </div>`
 	document.getElementById('car-line-list').innerHTML += item
@@ -332,7 +334,7 @@ function update_carline(i) {
 function options(car) {
   db.ref('carlines/' + _date + '/global').get().then(snap => {
     var actual_carline = snap.val()
-    var _filter = i => i.car != car
+    var _filter = i => i[3] != car
     var _filtered = actual_carline.filter(_filter)
 
     var confirm_text = ''
@@ -367,7 +369,10 @@ function toggle_keypad() {
 function call_bus(_bus) {
 	car_or_bus = 'bus'
 	//FIND BUS' STUDENTS
-	var read_bus = student => student.bus.includes(_bus)
+	var read_bus = student => {
+		var _array = student[4].split(',')
+		return _array.includes(_bus)
+	}
 	var students_in_bus = students.filter(read_bus)
 
 	if (students_in_bus.length > 0) {
@@ -376,11 +381,11 @@ function call_bus(_bus) {
 		var names_in_bus = []
 
 		function write_names(student) {
-			var _name = student.f_name + ' - ' + student.grade
+			var _name = student[1] + ' - ' + student[2]
 			names_in_bus.push(_name)
-			student.car = _bus
-			student.time = new Date().toLocaleTimeString()
-			student.local = local
+			student[3] = _bus
+			student[6] = new Date().toLocaleTimeString()
+			student[5] = local
 			_students.push(student)
 		}
 
@@ -465,7 +470,7 @@ function update_(updated_carline) {
 	var _12th_list = []
 	if (updated_carline.length > 0) {
 		updated_carline.map(i => {
-			var _grade = i.grade.trim()
+			var _grade = i[2].toUpperCase().trim()
 			switch (_grade) {
 				case 'PRE-K3':
 						_elementary_list.push(i)
@@ -560,7 +565,7 @@ function update_(updated_carline) {
 		updates['carlines/' + _date + '/10th/'] = _10th_list
 		updates['carlines/' + _date + '/11th/'] = _11th_list
 		updates['carlines/' + _date + '/12th/'] = _12th_list
-		db.ref().update(updates).then(e => console.log(e)).catch(e => alert(e.message))
+		db.ref().update(updates).then(() => null).catch(e => alert(e.message))
 }
 
 // end carline
@@ -608,12 +613,12 @@ function show_class(id) {
 }
 
 function write_list(i) {
-	var f_name = i.f_name
-	var l_name = i.l_name
-	var grade = i.grade
-	var time = i.time.substring(0, 5)
+	var f_name = i[1]
+	var l_name = i[0]
+	var grade = i[2]
+	var time = i[6].substring(0, 5)
 	if (time.slice(-1) == ":") time = time.slice(0, -1)
-	var _local = i.local
+	var _local = i[5]
 	var item = group ? 
 						`<div class=${_local}>${grade} | ${f_name} ${l_name} | ${time} </div>` :
 						`<div class=${_local}>${f_name} ${l_name} | ${time} </div>`
@@ -649,6 +654,16 @@ document.getElementById('btn-12th').addEventListener('click', () => show_class('
 
 //end classes
 
+
+//open database
+
+document.getElementById('btn-database').addEventListener('click', () => {
+	window.open('https://docs.google.com/spreadsheets/d/1b02rcGLCcUXlBr8f01V_MzHgVQsjlhO_UaJ7zt36hkU/edit#gid=0', '_blank')
+})
+
+//open database end
+
+
 //background animation
 
 function blink(id) {
@@ -668,6 +683,7 @@ function blink(id) {
 
 
 // search student home page
+
 var btn_search_home = document.getElementById('btn-search-h')
 btn_search_home.addEventListener('click', () => open_search())
 
@@ -676,3 +692,107 @@ function open_search() {
 	show_page('page-edit-student')
 	home = true
 }
+
+// search student home page end
+
+//chat
+localStorage.setItem('myName', 'nobody')
+var myName
+var new_messages = 0
+
+listen_chat()
+
+async function listen_chat() {
+	await set_today()	
+	db.ref('carlines/' + _date + '/chat').on("child_added", snap => {
+		new_messages ++
+		document.getElementById('new-messages').innerText = new_messages
+		document.getElementById('new-messages').classList.remove('hidden')
+	})
+}
+
+async function open_chat() {
+	if (myName == undefined) {
+		var getName = prompt("Enter your name");
+		if (getName != null && getName != '') {
+			localStorage.setItem('myName', getName.trim())
+			myName = localStorage.getItem('myName')
+			// listen for incoming messages
+			db.ref('carlines/' + _date + '/chat').on("child_added", function (snapshot) {
+				var name = snapshot.val().sender
+				var text = snapshot.val().message
+				var ms = snapshot.val().time
+				var time = new Date(ms).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) 
+				var html = `
+				<span class='chat-name'>${name}</span>
+				<span class='message-text'>${text}</span>
+				<span class='chat-time'>${time}</span>
+				`		
+				var div = document.createElement('div')
+				div.classList.add('message-div')
+				div.innerHTML = html	
+        document.getElementById("messages").appendChild(div)
+				
+				document.getElementById("messages").scrollTo({
+					top: document.getElementById("messages").scrollHeight,
+					left: 0,
+					behavior: 'smooth',
+				})
+			});
+			document.getElementById('index').classList.add('hidden')
+			document.getElementById('chat').classList.remove('hidden')
+			document.getElementById('close-chat').classList.remove('hidden')
+			new_messages = 0
+			document.getElementById('new-messages').classList.add('hidden')
+		}
+	} else {
+		document.getElementById('index').classList.add('hidden')
+		document.getElementById('chat').classList.remove('hidden')
+		document.getElementById('close-chat').classList.remove('hidden')
+		
+	}
+	document.getElementById("messages").scrollTo({
+		top: document.getElementById("messages").scrollHeight,
+		left: 0,
+		behavior: 'smooth',
+	})
+}
+
+function sendMessage() {
+	// get message
+	var message = document.getElementById("message").value;
+ 
+	// save in database
+	if (message != '') {
+		db.ref('carlines/' + _date + '/chat').push().set({
+			"sender": myName,
+			"message": message,
+			"time" : new Date().getTime()
+	});
+	}
+
+	document.getElementById("message").value = ''
+	document.getElementById("message").focus()
+	// prevent form from submitting
+	return false;
+}
+
+function close_chat() {
+	document.getElementById("index").scrollTo({
+		top: 0,
+		left: 0,
+		behavior: 'auto',
+	})
+	new_messages = 0
+	document.getElementById('new-messages').classList.add('hidden')
+	document.getElementById('index').classList.remove('hidden')
+	document.getElementById('chat').classList.add('hidden')
+	document.getElementById('close-chat').classList.add('hidden')
+}
+
+document.getElementById('open-chat').addEventListener('click', open_chat)
+document.getElementById('close-chat').addEventListener('click', close_chat)
+
+//chat end
+
+window.addEventListener('submit', (e) => e.preventDefault())

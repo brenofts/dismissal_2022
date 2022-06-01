@@ -2,13 +2,16 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  user-select: none;
   font-family: 'Bai Jamjuree', sans-serif;
   text-transform: uppercase;
   letter-spacing: 1.7pt;
+  outline: none;
+  border: 0;
 }
 
 #title {
+  position: fixed;
+  width: 100vw;
   padding-left: .5em;
   background-color: black;
   color: white;
@@ -48,15 +51,14 @@ input[type=date] {
 button {
   padding: .7em 1.5em;
   background-color: white;
-  border-right: 3px solid black;
-  border-bottom: 4px solid rgb(52, 124, 52);
+  /* border-right: 3px solid black;
+  border-bottom: 4px solid rgb(52, 124, 52); */
   margin: .2em;
   border-radius: .3em;
+  box-shadow: 2px 2px 5px rgb(55, 93, 65);
 }
 
 button:active {
-  border-right: 3px solid;
-  border-bottom: 4px solid;
   color: rgb(189, 189, 189);
 }
 
@@ -69,18 +71,19 @@ button:active {
 
 #list-result div {
   padding: .3em;
-  background-color: rgb(214, 214, 214);
   margin: .2em;
-  border: 2px rgb(78, 85, 122) solid;
+  background-color: rgb(115, 210, 142);
+  font-size: 12px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .page {
-  padding: .5em;
-  padding-bottom: 2em;
+  padding: 50px 5px 2em 5px;
   background-color: rgb(97, 161, 113);
   height: max-content;
-  min-height: 96vh;
+  min-height: 100vh;
+  user-select: none;
 }
 
 .button-menu {
@@ -88,7 +91,6 @@ button:active {
 }
 
 .button-menu-h {
-  margin-top: 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -99,6 +101,8 @@ button:active {
 #btn-admin {
   background-color: rgb(78, 128, 90);
   color: white;
+  margin-top: 20px;
+  opacity: .7;
 }
 
 #new-student-form, #edit-student-form {
@@ -154,7 +158,7 @@ h3 {
 
 #toggle-keypad {
   position: absolute;
-  bottom: 10vh;
+  bottom: 15vh;
   right: 1VW;
   color: white;
   background-color: rgb(66, 109, 77);
@@ -234,17 +238,17 @@ h3 {
 }
 
 .class-list{
-  height: 80vh;
+  height: 80%;
   z-index: 10;
   flex-direction: column;
   position: absolute;
-  top: 40px;
   background-color: black;
   color: white;
   width: 95vw;
   overflow: hidden;
 	overflow-y: scroll;
   padding-left: 4px;
+  margin-left: 4px;
   font-size: 12pt;
   border-radius: 6px;
   transition: all .5s;
@@ -265,10 +269,10 @@ h3 {
   color: yellow;
 }
 
+
 #classes-list-div {
   display: none;
 }
-
 
 #div-message, #div-confirm {
   position: absolute;
@@ -316,17 +320,18 @@ h3 {
 }
 
 #card-confirm {
+  margin-top: 15px;
   background-color: black;
   border: 7px solid rgb(78, 128, 90);
   border-radius: 4px;
   color: white;
   width: 320px;
   text-align: center;
+  box-shadow: 2px 2px 5px rgb(40, 69, 48);
 }
 
-#card-confirm h4 {
-  background-color: rgb(78, 128, 90);
-  padding-bottom: 5px;
+#card-confirm button {
+  box-shadow: 2px 2px 5px rgb(65, 65, 65);
 }
 
 #car-number {
@@ -383,6 +388,126 @@ h3 {
 #confirm-buttons button {
   width: 120px;
 }
+
+#chat-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px;
+  background: linear-gradient(180deg, rgb(72, 72, 72) 0%, rgb(0,0,0) 80%, rgb(0,0,0) 100%);
+  height:100vh;
+  padding-bottom: 50px;
+}
+
+#messages {
+  list-style-type: none;
+  overflow: hidden;
+  overflow-y: scroll;
+  margin-top: 40px;
+}
+
+.message-div{
+  display: flex;
+  flex-direction: column;
+  padding: 5px 10px;
+  background-color: black;
+  color: white;
+  margin: 5px;
+  border-radius: 12px;
+  font-size: 8pt;
+  min-width: auto;
+  max-width: 90vw;
+  width: fit-content;
+}
+
+.chat-name {
+  font-weight: bold;
+  color: rgb(152, 152, 152);
+  min-width: auto;
+  margin-bottom: 4px;
+}
+
+.chat-time {
+  align-self: flex-end;
+  margin-top: 4px;
+  font-size: 8px;
+  color: rgb(101, 101, 101);
+  width: fit-content;
+}
+
+.message-text {
+  width: fit-content;
+  text-align: left;
+}
+
+#chat-div form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: black;
+  padding: 5px;
+  border-radius: 20px;
+}
+
+#chat-div input[type=submit] {
+  width: 60px;
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0px 2px 5px rgb(71, 71, 71);
+}
+
+#chat-div input[type=text] {
+  width: max-content;
+  outline: none;
+  border: none;
+  width: 100%;
+  color: white;
+  text-transform: uppercase;
+  background-color: black;
+}
+
+#close-chat {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background-color: white;
+  color: black;
+  padding: 10px 15px;
+  border-radius: 50%;
+  opacity: .8;
+  font-weight: bold;
+  
+}
+
+#open-chat {
+  position: fixed;
+  z-index: 20;
+  color: white;
+  font-weight: bold;
+  right: 10px;
+  bottom: 15px;
+  background-color: BLACK;
+  padding: 10px;
+  border: solid white 2px;
+  border-radius: 4px;
+}
+
+#new-messages {
+  position: absolute;
+  right: -7px;
+  top: -10px;
+  background-color: red;
+  padding: 5px;
+  padding-left: 7px;
+  font-size: 10px;
+  color: white;
+  line-height: 10px;
+  text-align: center;
+  border-radius: 20px;
+}
+
 .hidden {
   display: none;
 }

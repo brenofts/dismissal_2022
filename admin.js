@@ -36,16 +36,16 @@ function clear_inputs() {
 
 // buttons
 
-const btn_student = document.getElementById('btn-student')
+// const btn_student = document.getElementById('btn-student')
 
-const btn_new_student = document.getElementById('btn-new-student')
+// const btn_new_student = document.getElementById('btn-new-student')
 const btn_cancel_new_student = document.getElementById('btn-new-student-cancel')
 const btn_cancel_search = document.getElementById('btn-search-cancel')
 const btn_ok_new_student = document.getElementById('btn-new-student-ok')
 
 
-// btn_student.addEventListener('click', e => show_page(student_page))
-btn_new_student.addEventListener('click', e => show_page('page-new-student'))
+// btn_student.addEventListener('click', e => show_page('student_page'))
+// btn_new_student.addEventListener('click', e => show_page('page-new-student'))
 btn_cancel_new_student.addEventListener('click', e => show_page('page-admin'))
 btn_cancel_search.addEventListener('click', e => {
   if (home) show_page('page-home')
@@ -152,12 +152,12 @@ btn_ok_new_student.addEventListener('click', e => check_new_student())
 
 // edit student
 
-const btn_edit_student = document.getElementById('btn-edit-student')
-btn_edit_student.addEventListener('click', e => {
-  home = false
-  document.getElementById('edit-title').innerText = 'Edit student'
-  show_page('page-edit-student')
-})
+// const btn_edit_student = document.getElementById('btn-edit-student')
+// btn_edit_student.addEventListener('click', e => {
+//   home = false
+//   document.getElementById('edit-title').innerText = 'Edit student'
+//   show_page('page-edit-student')
+// })
 
 const input_search_student = document.getElementById('i-search-student')
 const btn_search_student = document.getElementById('btn-search')
@@ -172,26 +172,26 @@ btn_search_student.addEventListener('click', e => {
   div_list_result.innerHTML = ''
   if(!input_search_student.value == '') {
     var name = input_search_student.value
-    db.ref('students').once('value', snap => {
+    db.ref('students/data').once('value', snap => {
       students_search = snap.val()
-      var find_student = student => student.f_name.toUpperCase().includes(name.toUpperCase())
+      var find_student = student => student[1].toUpperCase().includes(name.toUpperCase())
       var result = students_search.filter(find_student)
       if (result.length < 1) {
         alert('No register for ' + name)
       } else {
         function list_result(i) {
-          cars_list = i.car.join(', ')
-          buses_list = i.bus.join(', ')
-          var f_name = i.f_name
-          var l_name = i.l_name
-          var grade = i.grade
+          cars_list = i[3]
+          buses_list = i[4]
+          var f_name = i[1]
+          var l_name = i[0]
+          var grade = i[2]
           index = students_search.indexOf(i)
           var item
 
           if (home) {
-            item = `<div>${cars_list}, ${buses_list} | ${f_name} ${l_name} | ${grade}</div>`
+            item = `<div>${f_name} ${l_name} | ${grade} | ${cars_list} | ${buses_list}</div>`
           } else {
-            item = `<div onclick="edit_student(${index})">${cars_list}, ${buses_list} | ${f_name} ${l_name} | ${grade}</div>`
+            item = `<div onclick="edit_student(${index})">${cars_list} | ${buses_list} | ${f_name} ${l_name} | ${grade}</div>`
           }
 
           div_list_result.innerHTML += item

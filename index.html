@@ -12,18 +12,22 @@
 	</head>
 	<body>
 		<div class="index" id="index">
+			<div id="open-chat">
+				<span class="hidden" id="new-messages"></span>
+				<span>chat</span>
+			</div>
 			<div id="title">
 				<h2 id="title-text">DISMISSAL</h2>
 			</div>
 			<div id="pages">
 				<div class="page" id="page-home">
-					<h3>Home</h3>
+					
 					<div class="button-menu-h">
 						<button class="btn-menu" id="btn-carline">Carline</button>
 						<button class="btn-menu" id="btn-front-office">Front Office</button>
 						<button class="btn-menu" id="btn-classes">Classes</button>
-						<button class="btn-menu" id="btn-search-h">Search Student</button>
-						<button class="btn-menu" id="btn-search-car">Search Car</button>
+						<button class="btn-menu" id="btn-search-h">Search</button>
+						<!-- <button class="btn-menu" id="btn-search-car">Search Car</button> -->
 						<button class="btn-menu" id="btn-admin">admin</button>
 					</div>
 				</div>
@@ -44,7 +48,7 @@
 					
 					<div id="menu-classes">
 
-						<h3>Classes</h3>
+						
 						<div class="button-menu-h">
 							<button class="btn-menu" id="btn-elementary">Elementary</button>
 							<button class="btn-menu" id="btn-middle-high">Middle & High School</button>
@@ -119,8 +123,8 @@
 								<div class="num" id="num-7" onclick="insert_digit(7)">7</div>
 								<div class="num" id="num-8" onclick="insert_digit(8)">8</div>
 								<div class="num" id="num-9" onclick="insert_digit(9)">9</div>
-								<div class="num" id="num-0" onclick="insert_digit(0)">0</div>
 								<div id="num-ok">ok</div>
+								<div class="num" id="num-0" onclick="insert_digit(0)">0</div>
 								<div id="num-erase" onclick="erase()">⌫</div>
 							</div>
 							<div class="hidden" id="letters-keypad">
@@ -132,10 +136,22 @@
 			</div>
 		</div>
 
+		<div class="hidden" id="chat">
+			<div  id="chat-div">
+				<span class="hidden" id="close-chat">X</span>
+				<div id="messages"></div>
+				<form onsubmit="return sendMessage();">
+					<input type="text" placeholder="Type here" autocomplete="off" id="message">
+					<input type="submit" value="SEND">
+				</form>
+			</div>
+		</div>
+
 		<div class="page hidden" id="page-admin">
-			<h3>Student</h3>
+			<button id="btn-database">Database</button>
+			<!-- <h3>Student</h3>
 			<button id="btn-new-student">New Student</button>
-			<button id="btn-edit-student">Edit Student</button>
+			<button id="btn-edit-student">Edit Student</button> -->
 			<button onclick="show_page('page-home')">Back</button>
 		</div>
 		<div class="page hidden" id="page-new-student">
@@ -228,29 +244,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="page hidden" id="page-confirm">
-			<div id="div-confirm">
-				<div id="confirm-box">
-					text messagetext messagetext messagetext messagetext messagetext messagetext messagetext messagetext
-					messagetext messagetext messagetext messagetext messagetext message
-				</div>
-				<div id="buttons-confirm" class="div-menu">
-					<button>confirm</button>
-					<button>cancel</button>
-				</div>
-			</div>
-		</div>
-		<div class="page hidden" id="page-message">
-			<div id="div-message">
-				<div id="message-box">text message</div>
-			</div>
-		</div>
 
 
 		<div class="hidden" id="div-card-confirm">
 			<div  id="card-confirm">
-				
-				<h4>CONFIRM CAR <span id="local"></span></h4>
 		<div id="car-number"></div>
 		<div id="car-students"></div>
 		<!-- <div id="form-confirm">
